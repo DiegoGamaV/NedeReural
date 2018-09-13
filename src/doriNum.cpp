@@ -3,7 +3,7 @@
 // Implementação do construtor
 Narray::Narray(unsigned int _row, unsigned int _colunm){
     
-    // Aloca dinâmicamente a matriz na memória
+    // Aloca dinamicamente a matriz na memória
     values = (double**) malloc(sizeof(double*) * _row);
     for(register int i = 0; i < _row; i++)
         values[i] = (double*) malloc(sizeof(double) * _colunm);
@@ -88,12 +88,18 @@ void Narray::operator<< (double** a){
     memcpy(values, a, sizeof(double) * row * colunm);
 }
 
+// Definir matriz de valores
+void Narray::operator>> (double** a){
+    memcpy(a, values, sizeof(double) * row * colunm);
+}
+
 // Colocar valores aleatórios entre 0 e 1 na matriz
 void Narray::randomValues(){
     srand(time(NULL));
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
-            values[i][j] = rand() / ((double) RAND_MAX);
+            values[i][j] = (rand()%101);
+            values[i][j] *= rand()%2 == 0? 1 : -1;
         }
     }
 }
