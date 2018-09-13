@@ -3,7 +3,7 @@
 // Implementação do construtor
 Narray::Narray(unsigned int _row, unsigned int _colunm){
     
-    // Aloca dinâmicamente a matriz na memória
+    // Aloca dinamicamente a matriz na memória
     values = (double**) malloc(sizeof(double*) * _row);
     for(register int i = 0; i < _row; i++)
         values[i] = (double*) malloc(sizeof(double) * _colunm);
