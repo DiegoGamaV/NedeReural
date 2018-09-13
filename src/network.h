@@ -1,5 +1,5 @@
 #pragma once
-#include <bits/stdc++.h>
+#include "doriNum.h"
 
 // Header da Rede
 
@@ -13,19 +13,21 @@ struct Layer {
     unsigned int numNeuronsPrevious;
 
     // Matriz de pesos; w[i][j] representa o peso da aresta
-    // que conecta o i-esimo neuronio da camada anterior
-    // com o j-esimo neuronio da camada atual
-    double** weight;
+    // que conecta o j-esimo neuronio da camada anterior
+    // com o i-esimo neuronio da camada atual
+    Narray weight;
 
     // Biases da camada
-    double* bias;
-
+    Narray bias;
+    
     // Valores de ativacao dos neuronios das camadas
-    double* value;
+    // No caso da camada de output cada i-esimo elemento
+    // representa a resposta da rede para o i-esimo numero possivel
+    Narray value;
 
     // Construtor da camada
     Layer(unsigned int _numNeuronsThis, unsigned int _numNeuronsPrevious);
     
     // Funcao de ativacao dos neuronios da camada
-    double activate(double &previousValues);
+    double activate(Narray &previousValues);
 };
