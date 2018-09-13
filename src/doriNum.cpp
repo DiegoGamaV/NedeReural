@@ -88,6 +88,11 @@ void Narray::operator<< (double** a){
     memcpy(values, a, sizeof(double) * row * colunm);
 }
 
+// Definir matriz de valores
+void Narray::operator>> (double** a){
+    memcpy(a, values, sizeof(double) * row * colunm);
+}
+
 // Colocar valores aleatórios entre 0 e 1 na matriz
 void Narray::randomValues(){
     srand(time(NULL));

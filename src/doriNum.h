@@ -34,6 +34,9 @@ struct Narray{
     // Definir matriz de valores
     void operator<< (double** a);
 
+    // Retornar matriz de valores
+    void operator>> (double** a);
+
     // Elementos aleatórios na matriz
     void randomValues();
 };
