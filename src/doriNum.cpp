@@ -1,44 +1,22 @@
 #include "doriNum.h"
 
+// Implementação do construtor
 Narray::Narray(unsigned int _row, unsigned int _colunm){
+    
+    // Aloca dinâmicamente a matriz na memória
     values = (double**) malloc(sizeof(double*) * _row);
     for(register int i = 0; i < _row; i++)
         values[i] = (double*) malloc(sizeof(double) * _colunm);
+    
+    // guarda o tamanho da matriz
     row = _row;
     colunm = _colunm;
+    
+    // insere valores aleatórios na matriz
     randomValues();
 }
 
-Narray Narray::operator+ (const double &a){
-    Narray ret = Narray(row, colunm);
-    for(register int i = 0; i < row; i++){
-        for(register int j = 0; j < colunm; j++){
-            ret.values[i][j] = values[i][j] + a;
-        }
-    }
-    return ret;
-}
-
-Narray Narray::operator- (){
-    Narray ret = Narray(row, colunm);
-    for(register int i = 0; i < row; i++){
-        for(register int j = 0; j < colunm; j++){
-            ret.values[i][j] = values[i][j] * (-1);
-        }
-    }
-    return ret;
-}
-
-Narray Narray::operator* (const double &a){
-    Narray ret = Narray(row, colunm);
-    for(register int i = 0; i < row; i++){
-        for(register int j = 0; j < colunm; j++){
-            ret.values[i][j] = a * values[i][j];
-        }
-    }
-    return ret;
-}
-
+// Dividir a matriz por escalar
 Narray Narray::operator/ (const double &a){
     Narray ret = Narray(row, colunm);
     for(register int i = 0; i < row; i++){
@@ -49,6 +27,7 @@ Narray Narray::operator/ (const double &a){
     return ret;
 }
 
+// Somar matrizes
 Narray Narray::operator+ (const Narray &a){
     if(a.row != row || a.colunm != colunm){
         exit(1);
@@ -61,6 +40,8 @@ Narray Narray::operator+ (const Narray &a){
     }
     return ret;
 }
+
+// Subtrair matrizes
 Narray Narray::operator- (const Narray &a){
     if(a.row != row || a.colunm != colunm){
         exit(1);
@@ -74,6 +55,7 @@ Narray Narray::operator- (const Narray &a){
     return ret;
 }
 
+// Mapear elementos de matrizes
 Narray Narray::operator() (auto func){
     Narray ret = Narray(row, colunm);
     for(register int i = 0; i < row; i++){
@@ -84,6 +66,7 @@ Narray Narray::operator() (auto func){
     return ret;
 }
 
+// Multiplicação de matrizes
 Narray Narray::operator* (const Narray &a){
     if(colunm != a.row){
         exit(1);
@@ -100,6 +83,12 @@ Narray Narray::operator* (const Narray &a){
     return ret;
 }
 
+// Definir matriz de valores
+void Narray::operator<< (double** a){
+    memcpy(values, a, sizeof(double) * row * colunm);
+}
+
+// Colocar valores aleatórios entre 0 e 1 na matriz
 void Narray::randomValues(){
     srand(time(NULL));
     for(register int i = 0; i < row; i++){
@@ -109,6 +98,23 @@ void Narray::randomValues(){
     }
 }
 
+// Soma de escalar por matriz
+Narray operator+ (const double &a, const Narray &b){
+    Narray ret = Narray(b.row, b.colunm);
+    for(register int i = 0; i < b.row; i++){
+        for(register int j = 0; j < b.colunm; j++){
+            ret.values[i][j] = b.values[i][j] + a;
+        }
+    }
+    return ret;
+}
+
+// Soma de matriz por escalar
+Narray operator+(const Narray &a, const double &b){
+    return b + a;
+}
+
+// Subtração de escalar por matriz
 Narray operator- (double a, Narray &b){
     Narray ret = Narray(b.row, b.colunm);
     for(register int i = 0; i < b.row; i++){
@@ -119,6 +125,7 @@ Narray operator- (double a, Narray &b){
     return ret;
 }
 
+// Subtração de matriz por escalar
 Narray operator- (Narray &b, double a){
     Narray ret = Narray(b.row, b.colunm);
     for(register int i = 0; i < b.row; i++){
@@ -129,25 +136,28 @@ Narray operator- (Narray &b, double a){
     return ret;
 }
 
-auto sigmoid = [](double val){
-    return 1 / (1 + exp(-val));
-};
-
-auto fastSigmoid = [](double val){
-    return val / (1 +  fabs(val)); 
-};
-
-auto derivateSigmoid = [](double val){
-    return sigmoid(val) * (1 - sigmoid(val)); 
-};
-
-int main(){
-    Narray n = Narray(2, 2);
-    n.randomValues();
-    for(int i = 0; i < 2; i++){
-        for(int j = 0; j < 2; j++){
-            std::cout << n.values[i][j] << " \n"[j + 1 == 2];
+// Multiplicação de escalar por matriz
+Narray operator* (const double &a, const Narray &b){
+    Narray ret = Narray(b.row, b.colunm);
+    for(register int i = 0; i < b.row; i++){
+        for(register int j = 0; j < b.colunm; j++){
+            ret.values[i][j] = a * b.values[i][j];
         }
     }
-    return 0;
+    return ret;
 }
+
+// Multiplicação de matriz por escalar
+Narray operator* (const Narray &a, const double &b){
+    return b * a;
+}
+
+// Sigmoid já definida
+auto sigmoid = [](double val){
+    return 1.0 / (1.0 + exp(-val));
+};
+
+// Derivada da Sigmoida já definida
+auto derivateSigmoid = [](double val){
+    return sigmoid(val) * (1.0 - sigmoid(val)); 
+};
