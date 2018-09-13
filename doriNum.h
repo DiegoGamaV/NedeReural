@@ -9,7 +9,7 @@ struct Narray{
 
     Narray operator+ (const double &a);
 
-    Narray operator- (const double &a);
+    Narray operator- ();
 
     Narray operator* (const double &a);
 
@@ -20,6 +20,8 @@ struct Narray{
     Narray operator- (const Narray &a);
 
     Narray operator* (const Narray &a);
+
+    Narray operator() (auto func);
 
     void randomValues();
 };

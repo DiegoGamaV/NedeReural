@@ -10,35 +10,43 @@ Narray::Narray(unsigned int _row, unsigned int _colunm){
 }
 
 Narray Narray::operator+ (const double &a){
+    Narray ret = Narray(row, colunm);
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
-            values[i][j] += a;
+            ret.values[i][j] = values[i][j] + a;
         }
     }
+    return ret;
 }
 
-Narray Narray::operator- (const double &a){
+Narray Narray::operator- (){
+    Narray ret = Narray(row, colunm);
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
-            values[i][j] -= a;
+            ret.values[i][j] = values[i][j] * (-1);
         }
     }
+    return ret;
 }
 
 Narray Narray::operator* (const double &a){
+    Narray ret = Narray(row, colunm);
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
-            values[i][j] *= a;
+            ret.values[i][j] = a * values[i][j];
         }
     }
+    return ret;
 }
 
 Narray Narray::operator/ (const double &a){
+    Narray ret = Narray(row, colunm);
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
-            values[i][j] /= a;
+            ret.values[i][j] = values[i][j] / a;
         }
     }
+    return ret;
 }
 
 Narray Narray::operator+ (const Narray &a){
@@ -66,6 +74,16 @@ Narray Narray::operator- (const Narray &a){
     return ret;
 }
 
+Narray Narray::operator() (auto func){
+    Narray ret = Narray(row, colunm);
+    for(register int i = 0; i < row; i++){
+        for(register int j = 0; j < colunm; j++){
+            ret.values[i][j] = func(values[i][j]);
+        }
+    }
+    return ret;
+}
+
 Narray Narray::operator* (const Narray &a){
     if(colunm != a.row){
         exit(1);
@@ -79,6 +97,7 @@ Narray Narray::operator* (const Narray &a){
             }
         }
     }
+    return ret;
 }
 
 void Narray::randomValues(){
@@ -89,6 +108,38 @@ void Narray::randomValues(){
         }
     }
 }
+
+Narray operator- (double a, Narray &b){
+    Narray ret = Narray(b.row, b.colunm);
+    for(register int i = 0; i < b.row; i++){
+        for(register int j = 0; j < b.colunm; j++){
+            ret.values[i][j] = a - b.values[i][j];
+        }
+    } 
+    return ret;
+}
+
+Narray operator- (Narray &b, double a){
+    Narray ret = Narray(b.row, b.colunm);
+    for(register int i = 0; i < b.row; i++){
+        for(register int j = 0; j < b.colunm; j++){
+            ret.values[i][j] = b.values[i][j] - a;
+        }
+    } 
+    return ret;
+}
+
+auto sigmoid = [](double val){
+    return 1 / (1 + exp(-val));
+};
+
+auto fastSigmoid = [](double val){
+    return val / (1 +  fabs(val)); 
+};
+
+auto derivateSigmoid = [](double val){
+    return sigmoid(val) * (1 - sigmoid(val)); 
+};
 
 int main(){
     Narray n = Narray(2, 2);
