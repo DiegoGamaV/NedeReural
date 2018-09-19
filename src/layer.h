@@ -1,5 +1,6 @@
 #pragma once
-#include "doriNum.h"
+
+#include "inputreader.h"
 
 // Header da Rede
 
@@ -30,4 +31,8 @@ struct Layer {
     
     // Funcao de ativacao dos neuronios da camada
     double activate(Narray &previousValues);
+
+    // ativa os feedforwards de cada layer e 
+    // retornar o array de ativação final.
+    Narray feedfoward(Narray a);
 };
