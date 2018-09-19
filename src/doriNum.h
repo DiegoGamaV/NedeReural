@@ -4,6 +4,7 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include <algorithm>
 
 struct Narray{
 
@@ -39,4 +40,13 @@ struct Narray{
 
     // Elementos aleatórios na matriz
     void randomValues();
+
+    // Get matrix row
+    Narray getRow(int id);
+
+    // Get matrix colunm
+    Narray getColunm(int id);
+
+    // Pega a matriz transposta
+    Narray transposta();
 };

@@ -68,7 +68,19 @@ Narray Narray::operator() (auto func){
 
 // Multiplicação de matrizes
 Narray Narray::operator* (const Narray &a){
-    if(colunm != a.row){
+    if(std::min(colunm, row) == 1 && std::min(a.colunm, a.row) == 1){
+        int range = std::max(colunm, std::max(row, std::max(a.colunm, a.row)));
+        Narray ret = Narray(range, 1);
+        for(register int i = 0; i < range; i++)ret.values[i][0] = 1;
+
+        if(colunm > row)for(register int i = 0; i < colunm; i++)ret.values[i][0] *= values[0][i];
+        else for(register int i = 0; i < colunm; i++)ret.values[i][0] *= values[i][0];
+
+        if(a.colunm > a.row)for(register int i = 0; i < colunm; i++)ret.values[i][0] *= a.values[0][i];
+        else for(register int i = 0; i < colunm; i++)ret.values[i][0] *= a.values[i][0];
+
+        return ret;
+    }else if(colunm != a.row){
         exit(1);
     }
     Narray ret = Narray(row, a.colunm);
@@ -156,6 +168,32 @@ Narray operator* (const double &a, const Narray &b){
 // Multiplicação de matriz por escalar
 Narray operator* (const Narray &a, const double &b){
     return b * a;
+}
+
+// Get matrix row
+Narray Narray::getRow(int id){
+    if(id < 0 || id >= row) exit(1);
+    Narray ret = Narray(1, colunm);
+    for(register int i = 0; i < colunm; i++)ret.values[0][i] = values[id][i];
+    return ret;
+}
+
+// Get matrix colunm
+Narray Narray::getColunm(int id){
+    if(id < 0 || id >= colunm) exit(1);
+    Narray ret = Narray(row, 1);
+    for(register int i = 0; i < row; i++)ret.values[i][0] = values[i][id];
+    return ret;
+}
+
+// Pega a matriz transposta
+Narray Narray::transposta(){
+    Narray ret = Narray(colunm, row);
+    for(register int i = 0; i < row; i++){
+        for(register int j = 0; j < colunm; j++){
+            ret.values[j][i] = values[i][j];
+        }
+    }
 }
 
 // Sigmoid já definida
