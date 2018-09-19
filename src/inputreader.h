@@ -7,5 +7,5 @@
 #include "doriNum.h"
 
 struct InputReader{
-    Narray readMatrix(string path, int line, int column);
+    Narray readMatrix(std::string path, int line, int column);
 };
