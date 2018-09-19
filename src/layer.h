@@ -31,4 +31,5 @@ struct Layer {
     
     // Funcao de ativacao dos neuronios da camada
     Narray activate(Narray &previousValues);
+    
 };
