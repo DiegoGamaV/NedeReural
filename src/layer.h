@@ -30,9 +30,5 @@ struct Layer {
     Layer(unsigned int _numNeuronsThis, unsigned int _numNeuronsPrevious);
     
     // Funcao de ativacao dos neuronios da camada
-    double activate(Narray &previousValues);
-
-    // ativa os feedforwards de cada layer e 
-    // retornar o array de ativação final.
-    Narray feedfoward(Narray a);
+    Narray activate(Narray &previousValues);
 };

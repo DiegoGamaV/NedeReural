@@ -4,15 +4,14 @@
 Layer::Layer(unsigned int _numNeuronsThis, unsigned int _numNeuronsPrevious){
     weight = Narray(_numNeuronsThis, _numNeuronsPrevious);
 
-    bias = Narray(1, _numNeuronsThis);
+    bias = Narray(_numNeuronsThis, 1);
 }
 
 
-// ativa os feedforwards de cada layer e 
-// retornar o array de ativação final.
-Narray feedfoward(Narray a){
+// Funcao de ativacao dos neuronios da camada
+Narray activate(Narray a){
     for(int i = 0; i < colunm; i++){
-        a << sigmoid(weight.getColunm(i)*a.values[0][i] + bias.values[0][i]);
+        a << sigmoid(weight.getColunm(i)*a.values[i][0] + bias.values[i][0]);
     }
 
     return a;
