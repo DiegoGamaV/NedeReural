@@ -15,7 +15,7 @@ double quadraticCost(Narray output, int expected){
     Narray expectedOutput = buildExpectedOutput(size, expected);
     Narray costs = expectedOutput - output;
     for (int i = 0; i < size; i++){
-    	costs[i][0] = costs[i][0] * costs[i][0];
+    	costs.values[i][0] = costs.values[i][0] * costs.values[i][0];
     }
 
     double sumOfCosts = sumCosts(costs);
