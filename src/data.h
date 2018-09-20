@@ -7,7 +7,7 @@ struct Data {
     Narray weightsHidden;
 
     // Informacao sobre os pesos das arestas da camada output
-    Narray wieghtsOutput;
+    Narray weightsOutput;
 
     // Informacao sobre os biases de todos os neuronios
     Narray allBiases;
