@@ -51,3 +51,17 @@ struct Narray{
     // Pega a matriz transposta
     Narray transposta();
 };
+
+Narray operator+ (const double &a, const Narray &b);
+
+Narray operator+ (const Narray &b, const double &a);
+
+// Sigmoid já definida
+auto sigmoid = [](double val){
+    return 1.0 / (1.0 + exp(-val));
+};
+
+// Derivada da Sigmoida já definida
+auto derivateSigmoid = [](double val){
+    return sigmoid(val) * (1.0 - sigmoid(val)); 
+};
