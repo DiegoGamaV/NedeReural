@@ -16,6 +16,7 @@ struct Narray{
 
     // Construtor
     Narray(unsigned int _row, unsigned int _colunm);
+    Narray();
 
     // Operador de dividir todos os elementos por um escalar
     Narray operator/ (const double &a);

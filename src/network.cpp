@@ -21,17 +21,17 @@ double sumCosts(Narray);
 // de uma interpretacao correta e avalia o custo
 // do treinamento associado a essa resposta
 double quadraticCost(Narray output, int expected){
-
-    double totalCost = 0;
+	double totalCost = 0;
     
     unsigned int size = output.row;
     Narray expectedOutput = buildExpectedOutput(size, expected);
     Narray costs = expectedOutput - output;
+    for (int i = 0; i < size; i++){
+    	costs.values[i][0] = costs.values[i][0] * costs.values[i][0];
+    }
 
     double sumOfCosts = sumCosts(costs);
-    totalCost = sumOfCosts * sumOfCosts;
-
-    return totalCost;
+    return sumOfCosts;
 }
 
 // Cria uma matriz coluna que sera
