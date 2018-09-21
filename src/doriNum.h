@@ -43,10 +43,10 @@ struct Narray{
     // Elementos aleatórios na matriz
     void randomValues();
 
-    // Get matrix row
+    // Pega a linha da matriz
     Narray getRow(int id);
 
-    // Get matrix colunm
+    // Pega a coluna da matriz
     Narray getColunm(int id);
 
     // Pega a matriz transposta
