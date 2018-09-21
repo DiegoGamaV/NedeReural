@@ -16,6 +16,10 @@ Narray::Narray(unsigned int _row, unsigned int _colunm){
     randomValues();
 }
 
+Narray::Narray(){
+    Narray(0, 0);
+}
+
 // Dividir a matriz por escalar
 Narray Narray::operator/ (const double &a){
     Narray ret = Narray(row, colunm);
