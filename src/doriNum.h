@@ -5,6 +5,7 @@
 #include <string.h>
 #include <time.h>
 #include <algorithm>
+#include <functional>
 
 struct Narray{
 
@@ -31,7 +32,7 @@ struct Narray{
     Narray operator* (const Narray &a);
 
     // Mapear valores da matriz
-    Narray operator() (auto func);
+    Narray operator() (double (*f)(double));
 
     // Definir matriz de valores
     void operator<< (double** a);
@@ -50,18 +51,21 @@ struct Narray{
 
     // Pega a matriz transposta
     Narray transposta();
+
 };
 
 Narray operator+ (const double &a, const Narray &b);
 
 Narray operator+ (const Narray &b, const double &a);
 
-// Sigmoid já definida
-auto sigmoid = [](double val){
-    return 1.0 / (1.0 + exp(-val));
-};
+Narray operator- (double a, Narray &b);
 
-// Derivada da Sigmoida já definida
-auto derivateSigmoid = [](double val){
-    return sigmoid(val) * (1.0 - sigmoid(val)); 
-};
+Narray operator- (Narray &b, double a);
+
+Narray operator* (const double &a, const Narray &b);
+
+Narray operator* (const Narray &a, const double &b);
+
+double sigmoid(double val);
+
+double derivateSigmoid(double val);

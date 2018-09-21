@@ -60,11 +60,11 @@ Narray Narray::operator- (const Narray &a){
 }
 
 // Mapear elementos de matrizes
-Narray Narray::operator() (auto func){
+Narray Narray::operator() (double (*f)(double)){
     Narray ret = Narray(row, colunm);
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
-            ret.values[i][j] = func(values[i][j]);
+            ret.values[i][j] = f(values[i][j]);
         }
     }
     return ret;
@@ -198,4 +198,12 @@ Narray Narray::transposta(){
             ret.values[j][i] = values[i][j];
         }
     }
+}
+
+double sigmoid(double val){
+    return 1.0 / (1.0 + exp(-val));
+}
+
+double derivateSigmoid(double val){
+    return sigmoid(val) * (1.0 - sigmoid(val));
 }

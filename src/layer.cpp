@@ -22,6 +22,5 @@ Narray Layer::activate(Narray previousValues){
     for(int i = 0; i < previousValues.colunm; i++){
         previousValues = ((weight.getColunm(i)*previousValues.getRow(i)) + bias.values[i][0])(sigmoid);
     }
-
     return previousValues;
 }
