@@ -1,6 +1,6 @@
 #pragma once
 
-#include "inputreader.h"
+#include "dorinum.h"
 
 // Header da Rede
 
@@ -27,11 +27,20 @@ struct Layer {
     Narray value;
 
     // Construtor da camada
-    Layer(std::string path, unsigned int _numNeuronsThis, unsigned int _numNeuronsPrevious);
+    Layer(unsigned int _numNeuronsThis, unsigned int _numNeuronsPrevious);
 
     //Construtor da camada vazia
     Layer();
     
+    //preenche os valores de weight com os valores presentes em actual
+    fillWeight(Narray actual);
+
+    //preenche os valores de Bias com os valores presentes em actual
+    fillBias(Narray actual);
+
+    //preenche os valores de Value com os valores presentes em actual
+    fillValue(Narray actual);
+
     // Funcao de ativacao dos neuronios da camada
     Narray activate(Narray previousValues);
     
