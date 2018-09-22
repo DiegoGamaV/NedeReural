@@ -3,6 +3,10 @@
 #include "data.h"
 #include "layer.h"
 
+Layer hidden;
+Layer output;
+Layer input;
+
 Narray buildExpectedOutput(unsigned int, int);
 
 double sumCosts(Narray);
@@ -10,6 +14,39 @@ double sumCosts(Narray);
 Data backpropagation(Layer, Layer, unsigned int);
 
 Data minibatchEvaluation(TrainingExample[], int);
+
+Data backpropagation(int expected){
+    Data data = Data();
+
+    data.weightsHidden = evaluateWeights(hidden, input, expected);
+    data.weightsOutput = evaluateWeights(output, hidden, expected);
+
+    data.biasesHidden = evaluateBiases(hidden, input, expected);
+    data.biasesOutput = evaluateBiases(output, hidden, expected);
+}
+
+Narray evaluateWeights(Layer current, Layer previous, int expecten) {
+    int sizeCurrent = current.numNeuronsThis;
+    int sizePrevious = previous.numNeuronsThis;
+
+    Narray ret = Narray(sizeCurrent, sizePrevious);
+
+    for (int i = 0; i < sizeCurrent; i++) {
+        double actCurr = current.value.values[i][0];
+
+        for (int j = 0; j < sizePrevious; j++) {
+            double actPrev = previous.value.values[j][i];
+            double weight = current.weight.values[i][j];
+            
+            //double variance = actPrev * derivateSigmoid()
+
+            // TODO
+        }
+    }
+}
+
+Narray evaluateBiases(Layer current, Layer previous, int expected);
+
 
 // Recebe o output como uma matriz
 // coluna e o numero esperado
