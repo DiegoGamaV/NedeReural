@@ -1,4 +1,6 @@
 #include "doriNum.h"
+#include "trainingExample.h"
+#include "data.h"
 #include "layer.h"
 
 Narray buildExpectedOutput(unsigned int, int);
