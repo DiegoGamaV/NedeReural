@@ -27,7 +27,8 @@ struct Layer {
 
     // Construtor da camada
     Layer(unsigned int _numNeuronsThis, unsigned int _numNeuronsPrevious);
-    
+    Layer();
+
     // Funcao de ativacao dos neuronios da camada
     double activate(Narray &previousValues);
 };

@@ -19,5 +19,6 @@ struct TrainingExample {
 
     // Construtor do exemplo de treino.
     TrainingExample(Narray &data, unsigned int _representedValue);
+    TrainingExample();
     
 };
