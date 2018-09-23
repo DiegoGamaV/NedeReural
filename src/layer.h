@@ -31,7 +31,7 @@ struct Layer {
 
     //Construtor da camada vazia
     Layer();
-    
+
     // Funcao de ativacao dos neuronios da camada
     Narray activate(Narray previousValues);
     
