@@ -1,8 +1,60 @@
 #include "doriNum.h"
+#include "trainingExample.h"
+#include "data.h"
+#include "layer.h"
+
+Layer hidden;
+Layer output;
+Layer input;
 
 Narray buildExpectedOutput(unsigned int, int);
 
 double sumCosts(Narray);
+
+Data backpropagation(Layer, Layer, unsigned int);
+
+Data minibatchEvaluation(TrainingExample[], int);
+
+void feedfoward(Narray activation){
+
+    Narray hidden_result = hidden.activate(activation);
+
+    output.activate(hidden_result);
+}
+
+Data backpropagation(int expected){
+  
+    Data data = Data();
+
+    data.weightsHidden = evaluateWeights(hidden, input, expected);
+    data.weightsOutput = evaluateWeights(output, hidden, expected);
+
+    data.biasesHidden = evaluateBiases(hidden, input, expected);
+    data.biasesOutput = evaluateBiases(output, hidden, expected);
+}
+
+Narray evaluateWeights(Layer current, Layer previous, int expecten) {
+    int sizeCurrent = current.numNeuronsThis;
+    int sizePrevious = previous.numNeuronsThis;
+
+    Narray ret = Narray(sizeCurrent, sizePrevious);
+
+    for (int i = 0; i < sizeCurrent; i++) {
+        double actCurr = current.value.values[i][0];
+
+        for (int j = 0; j < sizePrevious; j++) {
+            double actPrev = previous.value.values[j][i];
+            double weight = current.weight.values[i][j];
+            
+            //double variance = actPrev * derivateSigmoid()
+
+            // TODO
+        }
+    }
+}
+
+Narray evaluateBiases(Layer current, Layer previous, int expected);
+
 
 // Recebe o output como uma matriz
 // coluna e o numero esperado
@@ -35,7 +87,6 @@ Narray buildExpectedOutput(unsigned int size, int expected){
     return expectedOutput;
 }
 
-
 // Soma todos os valores da matriz coluna de custos
 double sumCosts(Narray costs){
     double sum = 0;
@@ -47,5 +98,42 @@ double sumCosts(Narray costs){
     return sum;
 }
 
+// Recebe o minibatch e o tamanho do minibatch,
+// e computa todas as mudancas desejadas nos pesos e biases
+// para cada um dos exemplos do minibatch, e retorna
+// a as mudancas medias desejadas.
+Data minibatchEvaluation(TrainingExample[] minibatch, int size){
+    TrainingExample sample;
+    Narray imageData;
+    //double cost = 0.0;
+    //double averageCost = 0.0;
+    Narray hiddenWeights = Narray(hidden.weight.row, hidden.weight.column);
+    Narray outputWeights = Narray(output.weight.row, output.weight.column);
+    Narray hiddenBiases = Narray(hidden.bias.row, 0);
+    Narray outputBiases = Narray(output.bias.row, 0);
+    Data desiredChanges;
+    Data averageDesiredChanges = Data(hiddenWeights, outputWeights, hiddenBiases, outputBiases);
 
+    for (int i = 0; i < size; i++){
+        sample = minibatch[i];
+        imageData = sample.imageData;
+        feedfoward(imageData);
+        
+        //cost = quadraticCost(output, sample.representedValue);
+        //averageCost = averageCost + cost;
 
+        desiredChanges = backpropagation(input, output, sample.representedValue);
+        averageDesiredChanges.weightsHidden = averageDesiredChanges.weightsHidden + desiredChanges.weightsHidden;
+        averageDesiredChanges.weightsOutput = averageDesiredChanges.weightsOutput + desiredChanges.weightsOutput;
+        averageDesiredChanges.biasesHidden = averageDesiredChanges.biasesHidden + desiredChanges.biasesHidden;
+        averageDesiredChanges.biasesOutput = averageDesiredChanges.biasesOutput + desiredChanges.biasesOutput;
+    }
+
+    //averageCost = averageCost / size;
+    averageDesiredChanges.weightsHidden = averageDesiredChanges.weightsHidden / size;
+    averageDesiredChanges.weightsOutput = averageDesiredChanges.weightsOutput / size;
+    averageDesiredChanges.biasesHidden = averageDesiredChanges.biasesHidden / size;
+    averageDesiredChanges.biasesOutput = averageDesiredChanges.biasesOutput / size;
+
+    return averageDesiredChanges;
+}
