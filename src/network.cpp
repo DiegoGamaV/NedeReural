@@ -15,7 +15,15 @@ Data backpropagation(Layer, Layer, unsigned int);
 
 Data minibatchEvaluation(TrainingExample[], int);
 
+void feedfoward(Narray activation){
+
+    Narray hidden_result = hidden.activate(activation);
+
+    output.activate(hidden_result);
+}
+
 Data backpropagation(int expected){
+  
     Data data = Data();
 
     data.weightsHidden = evaluateWeights(hidden, input, expected);
