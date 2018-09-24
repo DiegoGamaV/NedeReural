@@ -13,21 +13,21 @@ Layer::Layer() {
 }
 
 //preenche os valores de weight com os valores presentes em actual
-void Layer::fillWeight(Narray actual){
+void Layer::fillWeight(Narray &actual){
     if(actual.row == weight.row && actual.colunm == weight.colunm){
         weight << actual;
     }
 }
 
 //preenche os valores de bias com os valores presentes em actual
-void Layer::fillBias(Narray actual){
+void Layer::fillBias(Narray &actual){
     if(actual.row == bias.row && actual.colunm == bias.colunm){
         bias << actual;
     }
 }
 
 //preenche os valores de value com os valores presentes em actual
-void Layer::fillValue(Narray actual){
+void Layer::fillValue(Narray &actual){
     if(actual.row == value.row && actual.colunm == value.colunm){
         value << actual;
     }
@@ -36,7 +36,7 @@ void Layer::fillValue(Narray actual){
 // Funcao de ativacao dos neuronios da camada
 Narray Layer::activate(Narray previousValues){
     for(int i = 0; i < previousValues.colunm; i++){
-        previousValues = ((weight.getrow(i)*previousValues) + bias.values[i][0])(sigmoid);
+        previousValues = ((weight.getRow(i)*previousValues) + bias.values[i][0])(sigmoid);
     }
     return previousValues;
 }
