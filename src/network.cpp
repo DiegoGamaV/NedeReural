@@ -1,11 +1,4 @@
-#include "doriNum.h"
-#include "trainingExample.h"
-#include "data.h"
-#include "layer.h"
-
-Layer hidden;
-Layer output;
-Layer input;
+#include "network.h"
 
 Narray buildExpectedOutput(unsigned int, int);
 
