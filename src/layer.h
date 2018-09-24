@@ -31,7 +31,6 @@ struct Layer {
 
     //Construtor da camada vazia
     Layer();
-<<<<<<< HEAD
     
     //preenche os valores de weight com os valores presentes em actual
     fillWeight(Narray actual);
@@ -41,8 +40,6 @@ struct Layer {
 
     //preenche os valores de Value com os valores presentes em actual
     fillValue(Narray actual);
-=======
->>>>>>> master
 
     // Funcao de ativacao dos neuronios da camada
     Narray activate(Narray previousValues);
