@@ -35,6 +35,6 @@ struct network{
     // e computa todas as mudancas desejadas nos pesos e biases
     // para cada um dos exemplos do minibatch, e retorna
     // a as mudancas medias desejadas.
-    Data minibatchEvaluation(TrainingExample[] minibatch, int size);
+    Data minibatchEvaluation(TrainingExample minibatch[], int size);
 
 };

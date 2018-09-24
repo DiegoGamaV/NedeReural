@@ -33,13 +33,13 @@ struct Layer {
     Layer();
     
     //preenche os valores de weight com os valores presentes em actual
-    fillWeight(Narray actual);
+    void fillWeight(Narray &actual);
 
     //preenche os valores de Bias com os valores presentes em actual
-    fillBias(Narray actual);
+    void fillBias(Narray &actual);
 
     //preenche os valores de Value com os valores presentes em actual
-    fillValue(Narray actual);
+    void fillValue(Narray &actual);
 
     // Funcao de ativacao dos neuronios da camada
     Narray activate(Narray previousValues);
