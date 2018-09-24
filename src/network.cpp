@@ -7,17 +7,7 @@ void Network::feedfoward(Narray activation){
     output.activate(hidden_result);
 }
 
-Data Network::backpropagation(int expected){
-    Data data = Data();
-
-    data.weightsHidden = evaluateWeights(hidden, input, expected);
-    data.weightsOutput = evaluateWeights(output, hidden, expected);
-
-    data.biasesHidden = evaluateBiases(hidden, input, expected);
-    data.biasesOutput = evaluateBiases(output, hidden, expected);
-}
-
-Data Network::backpropagation(Layer input, Layer output, unsigned int representedValue){}
+Narray evaluateBiases(Layer current, Layer previous, int expected){}
 
 Narray Network::evaluateWeights(Layer current, Layer previous, int expecten) {
     int sizeCurrent = current.numNeuronsThis;
@@ -38,6 +28,18 @@ Narray Network::evaluateWeights(Layer current, Layer previous, int expecten) {
         }
     }
 }
+
+Data Network::backpropagation(int expected){
+    Data data = Data();
+
+    data.weightsHidden = evaluateWeights(hidden, input, expected);
+    data.weightsOutput = evaluateWeights(output, hidden, expected);
+
+    data.biasesHidden = evaluateBiases(hidden, input, expected);
+    data.biasesOutput = evaluateBiases(output, hidden, expected);
+}
+
+Data Network::backpropagation(Layer input, Layer output, unsigned int representedValue){}
 
 // Recebe o output como uma matriz
 // coluna e o numero esperado

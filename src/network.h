@@ -1,6 +1,5 @@
 #pragma once
 
-#include "doriNum.h"
 #include "trainingExample.h"
 #include "data.h"
 #include "layer.h"
@@ -10,14 +9,14 @@ struct Network{
     Layer output;
     Layer input;
 
-    Data backpropagation(int expected);
-    Data backpropagation(Layer input, Layer output, unsigned int representedValue);
-
     void feedfoward(Narray activation);
 
     Narray evaluateBiases(Layer current, Layer previous, int expected);
 
     Narray evaluateWeights(Layer current, Layer previous, int expecten);
+
+    Data backpropagation(int expected);
+    Data backpropagation(Layer input, Layer output, unsigned int representedValue);
 
     // Recebe o output como uma matriz
     // coluna e o numero esperado

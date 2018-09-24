@@ -15,21 +15,21 @@ Layer::Layer() {
 //preenche os valores de weight com os valores presentes em actual
 void Layer::fillWeight(Narray &actual){
     if(actual.row == weight.row && actual.colunm == weight.colunm){
-        weight << actual;
+        weight = actual;
     }
 }
 
 //preenche os valores de bias com os valores presentes em actual
 void Layer::fillBias(Narray &actual){
     if(actual.row == bias.row && actual.colunm == bias.colunm){
-        bias << actual;
+        bias = actual;
     }
 }
 
 //preenche os valores de value com os valores presentes em actual
 void Layer::fillValue(Narray &actual){
     if(actual.row == value.row && actual.colunm == value.colunm){
-        value << actual;
+        value = actual;
     }
 }
 

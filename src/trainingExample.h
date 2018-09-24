@@ -1,4 +1,5 @@
 #pragma once
+
 #include "doriNum.h"
 
 // Estrutura que representa um exemplo de treino, o par
