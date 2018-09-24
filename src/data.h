@@ -20,4 +20,7 @@ struct Data {
     // Construtor do tipo data.
     Data(Narray &hiddenWeights, Narray &outputWeights, Narray &hiddenBiases, Narray &outputBiases);
     Data();
+
+    // Somar datas
+    Data operator+ (const Data &a);
 };
