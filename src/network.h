@@ -1,3 +1,5 @@
+#pragma once
+
 #include "doriNum.h"
 #include "trainingExample.h"
 #include "data.h"
@@ -8,9 +10,9 @@ struct network{
     Layer output;
     Layer input;
 
-    Narray buildExpectedOutput(unsigned int, int);
+    Narray buildExpectedOutput(unsigned int size, int expected)
 
-    Data backpropagation(Layer, Layer, unsigned int);
+    Data backpropagation(int expected);
 
     void feedfoward(Narray activation);
 
