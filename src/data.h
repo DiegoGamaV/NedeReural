@@ -21,6 +21,9 @@ struct Data {
     Data(Narray &hiddenWeights, Narray &outputWeights, Narray &hiddenBiases, Narray &outputBiases);
     Data();
 
-    // Somar datas
+    // Somar Datas
     Data operator+ (const Data &a);
+
+    // Dividir Data por escalar
+    Data operator/ (const double &a);
 };

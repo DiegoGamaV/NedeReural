@@ -20,3 +20,15 @@ Data Data::operator+ (const Data &a){
 
     return ret;
 }
+
+// Dividir Data por escalar
+Data Data::operator/ (const double &a){
+
+    Data ret = Data();
+    ret.weightsHidden = weightsHidden / a;
+    ret.weightsOutput = weightsOutput / a;
+    ret.biasesOutput = biasesOutput / a;
+    ret.biasesHidden = biasesHidden / a;
+
+    return ret;
+}
