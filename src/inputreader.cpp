@@ -15,7 +15,7 @@ Narray InputReader::readMatrix(std::string path, int row, int column){
 }
 
 //pega todos os arquivos presentes no diretorio "path"
-vector<std::string> getDirectory(std::string path){
+std::vector<std::string> getDirectory(std::string path){
     DIR *dr;
     struct dirent *drnt;
     std::vector<std::string> ret;
