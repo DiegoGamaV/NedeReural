@@ -7,3 +7,7 @@ TrainingExample::TrainingExample(Narray &data, unsigned int _representedValue){
 	imageData = data;
 
 }
+
+TrainingExample::TrainingExample(){
+	// TODO
+}
