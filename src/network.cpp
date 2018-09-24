@@ -94,6 +94,8 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
     Narray imageData;
     //double cost = 0.0;
     //double averageCost = 0.0;
+
+    // TODO: Zerar narrays
     Narray hiddenWeights = Narray(hidden.weight.row, hidden.weight.colunm);
     Narray outputWeights = Narray(output.weight.row, output.weight.colunm);
     Narray hiddenBiases = Narray(hidden.bias.row, 0);
@@ -110,17 +112,13 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
         //averageCost = averageCost + cost;
 
         desiredChanges = backpropagation(input, output, sample.representedValue);
-        averageDesiredChanges.weightsHidden = averageDesiredChanges.weightsHidden + desiredChanges.weightsHidden;
-        averageDesiredChanges.weightsOutput = averageDesiredChanges.weightsOutput + desiredChanges.weightsOutput;
-        averageDesiredChanges.biasesHidden = averageDesiredChanges.biasesHidden + desiredChanges.biasesHidden;
-        averageDesiredChanges.biasesOutput = averageDesiredChanges.biasesOutput + desiredChanges.biasesOutput;
+
+        averageDesiredChanges = averageDesiredChanges + desiredChanges;
     }
 
     //averageCost = averageCost / size;
-    averageDesiredChanges.weightsHidden = averageDesiredChanges.weightsHidden / size;
-    averageDesiredChanges.weightsOutput = averageDesiredChanges.weightsOutput / size;
-    averageDesiredChanges.biasesHidden = averageDesiredChanges.biasesHidden / size;
-    averageDesiredChanges.biasesOutput = averageDesiredChanges.biasesOutput / size;
+
+    averageDesiredChanges = averageDesiredChanges / size;
 
     return averageDesiredChanges;
 }
