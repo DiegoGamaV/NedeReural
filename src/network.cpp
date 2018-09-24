@@ -7,7 +7,7 @@ void Network::feedfoward(Narray activation){
     output.activate(hidden_result);
 }
 
-Narray NetWork::evaluateBiases(Layer current, Layer previous, int expected){
+Narray Network::evaluateBiases(Layer current, Layer previous, int expected){
     //TODO
 }
 
