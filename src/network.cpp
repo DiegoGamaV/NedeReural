@@ -1,12 +1,5 @@
 #include "network.h"
 
-Narray buildExpectedOutput(unsigned int, int);
-
-double sumCosts(Narray);
-
-Data backpropagation(Layer, Layer, unsigned int);
-
-Data minibatchEvaluation(TrainingExample[], int);
 
 void feedfoward(Narray activation){
 
@@ -46,7 +39,6 @@ Narray evaluateWeights(Layer current, Layer previous, int expecten) {
     }
 }
 
-Narray evaluateBiases(Layer current, Layer previous, int expected);
 
 
 // Recebe o output como uma matriz
@@ -95,7 +87,7 @@ double sumCosts(Narray costs){
 // e computa todas as mudancas desejadas nos pesos e biases
 // para cada um dos exemplos do minibatch, e retorna
 // a as mudancas medias desejadas.
-Data minibatchEvaluation(TrainingExample[] minibatch, int size){
+Data minibatchEvaluation(TrainingExample minibatch[], int size){
     TrainingExample sample;
     Narray imageData;
     //double cost = 0.0;
