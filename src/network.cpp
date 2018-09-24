@@ -1,14 +1,13 @@
 #include "network.h"
 
 
-void feedfoward(Narray activation){
-
+void Network::feedfoward(Narray activation){
     Narray hidden_result = hidden.activate(activation);
 
     output.activate(hidden_result);
 }
 
-Data backpropagation(int expected){
+Data Network::backpropagation(int expected){
   
     Data data = Data();
 
@@ -19,7 +18,7 @@ Data backpropagation(int expected){
     data.biasesOutput = evaluateBiases(output, hidden, expected);
 }
 
-Narray evaluateWeights(Layer current, Layer previous, int expecten) {
+Narray Network::evaluateWeights(Layer current, Layer previous, int expecten) {
     int sizeCurrent = current.numNeuronsThis;
     int sizePrevious = previous.numNeuronsThis;
 
@@ -39,13 +38,11 @@ Narray evaluateWeights(Layer current, Layer previous, int expecten) {
     }
 }
 
-
-
 // Recebe o output como uma matriz
 // coluna e o numero esperado
 // de uma interpretacao correta e avalia o custo
 // do treinamento associado a essa resposta
-double quadraticCost(Narray output, int expected){
+double Network::quadraticCost(Narray output, int expected){
 	double totalCost = 0;
     
     unsigned int size = output.row;
@@ -61,7 +58,7 @@ double quadraticCost(Narray output, int expected){
 
 // Cria uma matriz coluna que sera
 // a melhor resposta possivel
-Narray buildExpectedOutput(unsigned int size, int expected){
+Narray Network::buildExpectedOutput(unsigned int size, int expected){
     Narray expectedOutput = Narray(size, 1);
 
     for (int i = 0; i < size; i++) {
@@ -73,7 +70,7 @@ Narray buildExpectedOutput(unsigned int size, int expected){
 }
 
 // Soma todos os valores da matriz coluna de custos
-double sumCosts(Narray costs){
+double Network::sumCosts(Narray costs){
     double sum = 0;
 
     for (int i = 0; i < costs.row; i++) {
@@ -87,7 +84,7 @@ double sumCosts(Narray costs){
 // e computa todas as mudancas desejadas nos pesos e biases
 // para cada um dos exemplos do minibatch, e retorna
 // a as mudancas medias desejadas.
-Data minibatchEvaluation(TrainingExample minibatch[], int size){
+Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
     TrainingExample sample;
     Narray imageData;
     //double cost = 0.0;

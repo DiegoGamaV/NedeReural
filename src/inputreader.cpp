@@ -20,7 +20,7 @@ std::vector<std::string> getDirectory(std::string path){
     struct dirent *drnt;
     std::vector<std::string> ret;
 
-    dr = opendir(path);
+    dr = opendir(path.c_str());
     if(dr){
         while((drnt = readdir(dr)) != NULL){
             ret.push_back(path + "/" + drnt->d_name);
