@@ -8,7 +8,6 @@ void Network::feedfoward(Narray activation){
 }
 
 Data Network::backpropagation(int expected){
-  
     Data data = Data();
 
     data.weightsHidden = evaluateWeights(hidden, input, expected);
@@ -17,6 +16,8 @@ Data Network::backpropagation(int expected){
     data.biasesHidden = evaluateBiases(hidden, input, expected);
     data.biasesOutput = evaluateBiases(output, hidden, expected);
 }
+
+Data Network::backpropagation(Layer input, Layer output, unsigned int representedValue){}
 
 Narray Network::evaluateWeights(Layer current, Layer previous, int expecten) {
     int sizeCurrent = current.numNeuronsThis;
@@ -89,8 +90,8 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
     Narray imageData;
     //double cost = 0.0;
     //double averageCost = 0.0;
-    Narray hiddenWeights = Narray(hidden.weight.row, hidden.weight.column);
-    Narray outputWeights = Narray(output.weight.row, output.weight.column);
+    Narray hiddenWeights = Narray(hidden.weight.row, hidden.weight.colunm);
+    Narray outputWeights = Narray(output.weight.row, output.weight.colunm);
     Narray hiddenBiases = Narray(hidden.bias.row, 0);
     Narray outputBiases = Narray(output.bias.row, 0);
     Data desiredChanges;

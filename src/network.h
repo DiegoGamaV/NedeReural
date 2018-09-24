@@ -11,6 +11,7 @@ struct Network{
     Layer input;
 
     Data backpropagation(int expected);
+    Data backpropagation(Layer input, Layer output, unsigned int representedValue);
 
     void feedfoward(Narray activation);
 
