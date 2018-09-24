@@ -10,8 +10,6 @@ struct network{
     Layer output;
     Layer input;
 
-    Narray buildExpectedOutput(unsigned int size, int expected)
-
     Data backpropagation(int expected);
 
     void feedfoward(Narray activation);
