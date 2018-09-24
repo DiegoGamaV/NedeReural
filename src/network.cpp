@@ -7,7 +7,9 @@ void Network::feedfoward(Narray activation){
     output.activate(hidden_result);
 }
 
-Narray evaluateBiases(Layer current, Layer previous, int expected){}
+Narray NetWork::evaluateBiases(Layer current, Layer previous, int expected){
+    //TODO
+}
 
 Narray Network::evaluateWeights(Layer current, Layer previous, int expecten) {
     int sizeCurrent = current.numNeuronsThis;

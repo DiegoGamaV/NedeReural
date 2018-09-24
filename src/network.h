@@ -4,7 +4,7 @@
 #include "data.h"
 #include "layer.h"
 
-struct Network{
+struct Network {
     Layer hidden;
     Layer output;
     Layer input;
