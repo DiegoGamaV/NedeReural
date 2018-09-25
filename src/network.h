@@ -25,7 +25,7 @@ struct Network {
 
     // Cria uma matriz coluna que sera
     // a melhor resposta possivel
-    Narray buildExpectedOutput(unsigned int size, int expected);
+    Narray buildExpectedOutput(int expected);
 
     // Soma todos os valores da matriz coluna de custos
     double sumCosts(Narray costs);

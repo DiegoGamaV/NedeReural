@@ -30,22 +30,31 @@ Data Network::backpropagation(Narray expected){
 
         // Iterar pelos neuronios da camada hidden
         for (int j = 0; j < hidden.numNeuronsThis; j++){
+            double W_output = output.weight.values[i][j];
             A_hidden = hidden.value.values[j][0];
             Z_hidden = hidden.zeta.values[j][0];
 
             // Guardar a mudanca necessaria para esse peso 
             data.weightsOutput.values[i][j] += A_hidden * recurrentPart;
             
+
+            double internalRecurrent = derivateSigmoid(Z_hidden) * W_output * recurrentPart;
+
+            // Atualiza biases da hidden
+            data.biasesHidden.values[j][0] += internalRecurrent;
+
             // Iterar pelos pesos entre a camada input e hidden
             for (int k = 0; k < input.numNeuronsThis; k++){
 
                 // (dz/dw) * (da/dz) * (dz/da) * recurrentPart
-                // TODO: Corrigir formula e atualizar biases da hidden
-                // TODO: Conectar isso com a nocao de criacao de uma layer para o input
-                data.weightsHidden.values[j][k] += A_input * derivateSigmoid(Z_hidden);
+                double calc = A_input * internalRecurrent;
+
+                data.weightsHidden.values[j][k] += calc;
             }
         }
     }
+
+    return data;
 }
 
 // Recebe o output como uma matriz
@@ -56,7 +65,7 @@ double Network::quadraticCost(Narray output, int expected){
 	double totalCost = 0;
     
     unsigned int size = output.row;
-    Narray expectedOutput = buildExpectedOutput(size, expected);
+    Narray expectedOutput = buildExpectedOutput(expected);
     Narray costs = expectedOutput - output;
     for (int i = 0; i < size; i++){
     	costs.values[i][0] = costs.values[i][0] * costs.values[i][0];
@@ -68,13 +77,13 @@ double Network::quadraticCost(Narray output, int expected){
 
 // Cria uma matriz coluna que sera
 // a melhor resposta possivel
-Narray Network::buildExpectedOutput(unsigned int size, int expected){
-    Narray expectedOutput = Narray(size, 1);
+Narray Network::buildExpectedOutput(int expected){
+    Narray expectedOutput = Narray(10, 1);
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < 10; i++) {
         expectedOutput.values[i][0] = 0;
     }
-    expectedOutput.values[expected][0] = 1;
+    expectedOutput.values[expected][0] = 1.0;
 
     return expectedOutput;
 }
@@ -116,7 +125,9 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
         //cost = quadraticCost(output, sample.representedValue);
         //averageCost = averageCost + cost;
 
-        //desiredChanges = backpropagation(input, output, sample.representedValue);
+        Narray expected = buildExpectedOutput(sample.representedValue);
+
+        desiredChanges = backpropagation(expected);
 
         averageDesiredChanges = averageDesiredChanges + desiredChanges;
     }
