@@ -1,5 +1,8 @@
 #include "network.h"
 
+Layer hidden;
+Layer output;
+Layer input;
 
 void Network::feedfoward(Narray activation){
     Narray hidden_result = hidden.activate(activation);
@@ -7,41 +10,43 @@ void Network::feedfoward(Narray activation){
     output.activate(hidden_result);
 }
 
-Narray Network::evaluateBiases(Layer current, Layer previous, int expected){
-    //TODO
-}
+Data Network::backpropagation(Narray expected){
+    Data data = Data();
+    
+    // TODO: Zerar data
+    double A_output, A_hidden, A_input, Z_output, Z_hidden, y;
 
-Narray Network::evaluateWeights(Layer current, Layer previous, int expecten) {
-    int sizeCurrent = current.numNeuronsThis;
-    int sizePrevious = previous.numNeuronsThis;
+    // Iterar pelos neuronios da camada output
+    for (int i = 0; i < output.numNeuronsThis; i++){
 
-    Narray ret = Narray(sizeCurrent, sizePrevious);
+        A_output = output.value.values[i][0];
+        Z_output = output.zeta.values[i][0];
+        y = expected.values[i][0];
 
-    for (int i = 0; i < sizeCurrent; i++) {
-        double actCurr = current.value.values[i][0];
+        // Derivada parcial (da/dz) * (dC0/da)
+        double recurrentPart = derivateSigmoid(Z_output) * 2 * (A_output - y);
+        // Gerar modificacao necessaria no bias do output
+        data.biasesOutput.values[i][0] += recurrentPart;
 
-        for (int j = 0; j < sizePrevious; j++) {
-            double actPrev = previous.value.values[j][i];
-            double weight = current.weight.values[i][j];
+        // Iterar pelos neuronios da camada hidden
+        for (int j = 0; j < hidden.numNeuronsThis; j++){
+            A_hidden = hidden.value.values[j][0];
+            Z_hidden = hidden.zeta.values[j][0];
+
+            // Guardar a mudanca necessaria para esse peso 
+            data.weightsOutput.values[i][j] += A_hidden * recurrentPart;
             
-            //double variance = actPrev * derivateSigmoid()
+            // Iterar pelos pesos entre a camada input e hidden
+            for (int k = 0; k < input.numNeuronsThis; k++){
 
-            // TODO
+                // (dz/dw) * (da/dz) * (dz/da) * recurrentPart
+                // TODO: Corrigir formula e atualizar biases da hidden
+                // TODO: Conectar isso com a nocao de criacao de uma layer para o input
+                data.weightsHidden.values[j][k] += A_input * derivateSigmoid(Z_hidden);
+            }
         }
     }
 }
-
-Data Network::backpropagation(int expected){
-    Data data = Data();
-
-    data.weightsHidden = evaluateWeights(hidden, input, expected);
-    data.weightsOutput = evaluateWeights(output, hidden, expected);
-
-    data.biasesHidden = evaluateBiases(hidden, input, expected);
-    data.biasesOutput = evaluateBiases(output, hidden, expected);
-}
-
-Data Network::backpropagation(Layer input, Layer output, unsigned int representedValue){}
 
 // Recebe o output como uma matriz
 // coluna e o numero esperado
@@ -111,7 +116,7 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
         //cost = quadraticCost(output, sample.representedValue);
         //averageCost = averageCost + cost;
 
-        desiredChanges = backpropagation(input, output, sample.representedValue);
+        //desiredChanges = backpropagation(input, output, sample.representedValue);
 
         averageDesiredChanges = averageDesiredChanges + desiredChanges;
     }

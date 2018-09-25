@@ -15,8 +15,7 @@ struct Network {
 
     Narray evaluateWeights(Layer current, Layer previous, int expecten);
 
-    Data backpropagation(int expected);
-    Data backpropagation(Layer input, Layer output, unsigned int representedValue);
+    Data backpropagation(Narray expected);
 
     // Recebe o output como uma matriz
     // coluna e o numero esperado
