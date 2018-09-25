@@ -36,7 +36,8 @@ void Layer::fillValue(Narray &actual){
 // Funcao de ativacao dos neuronios da camada
 Narray Layer::activate(Narray previousValues){
     for(int i = 0; i < previousValues.colunm; i++){
-        previousValues = ((weight.getRow(i)*previousValues) + bias.values[i][0])(sigmoid);
+        zeta = ((weight.getRow(i)*previousValues) + bias.values[i][0]);
+        value = zeta(sigmoid);
     }
-    return previousValues;
+    return value;
 }

@@ -15,8 +15,7 @@ struct Network {
 
     Narray evaluateWeights(Layer current, Layer previous, int expecten);
 
-    Data backpropagation(int expected);
-    Data backpropagation(Layer input, Layer output, unsigned int representedValue);
+    Data backpropagation(Narray expected);
 
     // Recebe o output como uma matriz
     // coluna e o numero esperado
@@ -26,7 +25,7 @@ struct Network {
 
     // Cria uma matriz coluna que sera
     // a melhor resposta possivel
-    Narray buildExpectedOutput(unsigned int size, int expected);
+    Narray buildExpectedOutput(int expected);
 
     // Soma todos os valores da matriz coluna de custos
     double sumCosts(Narray costs);
