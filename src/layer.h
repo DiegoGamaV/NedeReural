@@ -26,6 +26,10 @@ struct Layer {
     // representa a resposta da rede para o i-esimo numero possivel
     Narray value;
 
+    // Util para backpropagation: representa os valores
+    // de ativacao dos neuronios antes da funcao sigmoid
+    Narray zeta;
+
     // Construtor da camada
     Layer(unsigned int _numNeuronsThis, unsigned int _numNeuronsPrevious);
 
