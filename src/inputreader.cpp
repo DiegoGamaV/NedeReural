@@ -32,7 +32,7 @@ std::vector<std::string> InputReader::getDirectory(std::string path){
 
 // verifica se o arquivo esta vazio
 bool InputReader::empty(std::string path){
-    std::ifstream archive (path);
+    std::ifstream archive (path, std::ios::ate);
     return archive.tellg() == 0;
 }
 
