@@ -1,12 +1,21 @@
-typedef unsigned char byte;
+#pragma once
+
+#include <fstream>
+#include "doriNum.h"
+#include <vector>
+
+typedef char byte;
+
+union buffer{
+    int integer;
+    char chars[4];
+};
 
 struct binaryReader{
-    byte* buffer;
-    unsigned int buffer_size;
-    FILE *binary;
+    std::ifstream image;
+    std::ifstream label;
 
-    binaryReader();
+    binaryReader(std::string image_path, std::string label_path);
 
-    // return size
-    int getBuffer();
-}
+    std::vector <std::pair<Narray, byte > > allData();
+};
