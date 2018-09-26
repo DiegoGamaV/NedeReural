@@ -10,13 +10,12 @@ Narray InputReader::readMatrix(std::string path, int row, int column){
             archive >> ret.values[i][j];
         }
     }
-
     archive.close();
     return ret;
 }
 
 //pega todos os arquivos presentes no diretorio "path"
-std::vector<std::string> getDirectory(std::string path){
+std::vector<std::string> InputReader::getDirectory(std::string path){
     DIR *dr;
     struct dirent *drnt;
     std::vector<std::string> ret;
@@ -37,6 +36,7 @@ bool InputReader::empty(std::string path){
     return archive.tellg() == 0;
 }
 
+// Esvazia o arquivo recebido
 void clear(std::string path){
     std::ofstream archive (path);
 
@@ -45,6 +45,7 @@ void clear(std::string path){
     archive.close();
 }
 
+// Preenche o arquivo com os valores da matriz
 void InputReader::fillArchive(std::string path, Narray content){
     std::ofstream archive (path);
 
@@ -59,12 +60,15 @@ void InputReader::fillArchive(std::string path, Narray content){
     archive.close();
 }
 
+// Cria um exemplo de treino "TrainingExample"
 TrainingExample InputReader::createTrainingExample(int foreseen, Narray activity){
     TrainingExample ret = TrainingExample(activity, foreseen);
 
     return ret;
 }
 
+// Recebe o arquivo
+// Retorna o valor previsto do arquivo
 int InputReader::getforeseen(std::string path){
     bool number = false;
     for(int i = 0; i < path.size(); i++){
@@ -73,6 +77,9 @@ int InputReader::getforeseen(std::string path){
         if(number) return path[i]-'0';
     }
 }
+
+// Faz um vector de treinos
+// Retorna o vector criado
 std::vector<TrainingExample> InputReader::makeTrainings(std::string path, int row, int column){
     std::vector<std::string> archive = getDirectory(path);
 
