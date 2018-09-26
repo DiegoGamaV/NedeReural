@@ -2,7 +2,7 @@
 
 //Recebe o numero atual e a chance entre 0 e 1 de ser o mesmo
 //Retorna uma string formatada do numero em porcentagem
-std::string toPercentage(int index, double number) {
+std::string Output::toPercentage(int index, double number) {
     char *ret;
     sprintf(ret, "[%d - %.2lf%%]", index, number);
 
@@ -11,7 +11,7 @@ std::string toPercentage(int index, double number) {
 
 //Recebe os valores de ativacao do layer
 //Retorna as porcentagens
-std::string print(Narray activations_values) {
+std::string Output::print(Narray activations_values) {
     std::string ret;
     double bestSigmoid = -1;
     int retNumber = 0;
