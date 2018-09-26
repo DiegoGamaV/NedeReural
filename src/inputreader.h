@@ -9,6 +9,8 @@
 #include <vector>
 #include "doriNum.h"
 #include "trainingExample.h"
+#include "data.h"
+#include "fstream"
 
 struct InputReader{
 
@@ -35,4 +37,11 @@ struct InputReader{
 
     // faz o vector de exemplos de treino
     std::vector<TrainingExample> makeTrainings(std::string path, int row, int column);
+
+    // Recebe o diretorio das informacoes da rede e retorna um data
+    Data fileToData(std::string path);
+
+    // Recebe um data das informacoes da rede e coloca em arquivos
+    // dentro de um certo diretorio
+    void dataToFile(std::string path, Data data);
 };
