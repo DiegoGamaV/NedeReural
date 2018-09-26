@@ -5,10 +5,13 @@
 #include "layer.h"
 
 struct Network {
+
     Layer hidden;
     Layer output;
     Layer input;
 
+    Network();
+    
     Network(int pixels, int sizeHidden);
 
     Network(int pixels, int sizeHidden, Data data);

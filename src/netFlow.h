@@ -1,10 +1,11 @@
 #pragma once
 #include "network.h"
 #include "inputreader.h"
+#include "output.h"
 
 // Funcao que executa a rede neural
 // apenas para fornecer uma resposta
-void execute();
+std::string execute();
 
 
 // Funcao que executa a rede neural no

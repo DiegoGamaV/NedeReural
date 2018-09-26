@@ -4,6 +4,11 @@ Layer hidden;
 Layer output;
 Layer input;
 
+// Constroi uma network sem informacao
+Network::Network(){
+    hidden = Layer(16, 784);
+    output = Layer(10, 16);
+}
 
 // Constroi uma network com valores arbitrarios
 Network::Network(int pixels, int sizeHidden){
