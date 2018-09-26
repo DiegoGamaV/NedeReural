@@ -2,11 +2,12 @@
 
 const unsigned int NUM_PIXELS = 784;
 const unsigned int SIZE_HIDDEN = 16;
-const std::string DATA_PATH = "/data/info.data";
-const std::string INPUT_PATH = "/input/image.txt";
+const std::string DATA_PATH = "./data/info.data";
+const std::string INPUT_PATH = "./input/image.txt";
 Network network;
 
 bool existsFile(std::string path);
+// void printMatrix(Narray);
 
 std::string execute() {
 
@@ -15,6 +16,7 @@ std::string execute() {
 
     /* Checar casos de execucao */
     bool isFirstExec = !existsFile(DATA_PATH);
+
 
     if (isFirstExec) {
         network = Network(NUM_PIXELS, SIZE_HIDDEN);
@@ -33,15 +35,25 @@ std::string execute() {
 
     network.feedfoward(image);
 
+    // printMatrix(network.output.value);
     // TODO: Corrigir erro nessa linha
     // std::string answer = output.print(network.output.value);
-    std::string answer = "ERROR";
-    return answer;
+
+    
+    // return answer;
+    return " ";
 }
+
+// void printMatrix(Narray a){
+//     for (int i = 0; i < a.row; i++) {
+//         for (int j = 0; j < a.colunm; j++) {
+//             std::cout << a.values[i][j] << " ";
+//         } std::cout << std::endl;
+//     }
+// }
 
 bool existsFile(std::string path) {
     InputReader ir;
-
     return !ir.empty(path);
 }
 

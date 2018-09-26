@@ -27,9 +27,9 @@ Network::Network(int pixels, int sizeHidden, Data data){
 
 void Network::feedfoward(Narray activation){
     Narray hidden_result = hidden.activate(activation);
-
     output.activate(hidden_result);
 }
+
 
 Data Network::backpropagation(Narray expected){
     Data data = Data();
