@@ -4,6 +4,22 @@ Layer hidden;
 Layer output;
 Layer input;
 
+
+// Constroi uma network com valores arbitrarios
+Network::Network(int pixels, int sizeHidden){
+    hidden = Layer(sizeHidden, pixels);
+    output = Layer(10, sizeHidden);
+}
+
+// Constroi uma rede recebendo todas as informacoes dela
+Network::Network(int pixels, int sizeHidden, Data data){
+    Network(pixels, sizeHidden);
+    hidden.weight = data.weightsHidden;
+    output.weight = data.weightsOutput;
+    hidden.bias = data.biasesHidden;
+    output.bias = data.biasesOutput;
+}
+
 void Network::feedfoward(Narray activation){
     Narray hidden_result = hidden.activate(activation);
 

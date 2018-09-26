@@ -9,6 +9,10 @@ struct Network {
     Layer output;
     Layer input;
 
+    Network(int pixels, int sizeHidden);
+
+    Network(int pixels, int sizeHidden, Data data);
+
     void feedfoward(Narray activation);
 
     Narray evaluateBiases(Layer current, Layer previous, int expected);
