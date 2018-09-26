@@ -11,6 +11,7 @@ Narray InputReader::readMatrix(std::string path, int row, int column){
         }
     }
 
+    archive.close();
     return ret;
 }
 
@@ -35,3 +36,52 @@ bool InputReader::empty(std::string path){
     std::ifstream archive (path);
     return archive.tellg() == 0;
 }
+
+void clear(std::string path){
+    std::ofstream archive (path);
+
+    archive << " ";
+
+    archive.close();
+}
+
+void InputReader::fillArchive(std::string path, Narray content){
+    std::ofstream archive (path);
+
+    for(int i = 0; i < content.row; i++){
+        for(int j = 0; j < content.colunm; j++){
+            archive << content.values[i][j];
+            archive << " ";
+        }
+        archive << "\n";
+    }
+
+    archive.close();
+}
+
+TrainingExample InputReader::createTrainingExample(int foreseen, Narray activity){
+    TrainingExample ret = TrainingExample(activity, foreseen);
+
+    return ret;
+}
+
+int InputReader::getforeseen(std::string path){
+    bool number = false;
+    for(int i = 0; i < path.size(); i++){
+        if(path[i] == '-') number = true;
+
+        if(number) return path[i]-'0';
+    }
+}
+std::vector<TrainingExample> InputReader::makeTrainings(std::string path, int row, int column){
+    std::vector<std::string> archive = getDirectory(path);
+
+    std::vector<TrainingExample> ret;
+    for(int i = 0; i < archive.size(); i++){
+        TrainingExample aux = createTrainingExample(getforeseen(archive[i]) , readMatrix(archive[i], row, column));
+        ret.push_back(aux);
+    }
+
+    return ret;
+}
+

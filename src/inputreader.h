@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include "doriNum.h"
+#include "trainingExample.h"
 
 struct InputReader{
 
@@ -19,4 +20,14 @@ struct InputReader{
 
     // verifica se o arquivo esta vazio
     bool empty(std::string path);
+
+    void clear(std::string path);
+
+    void fillArchive(std::string path, Narray value);
+
+    int InputReader::getforeseen(std::string path);
+    
+    TrainingExample createTrainingExample(int foreseen, Narray activity);
+
+    std::vector<TrainingExample> makeTrainings(std::string path, int row, int column);
 };
