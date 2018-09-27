@@ -3,7 +3,6 @@
 // implementacao do construtor
 Layer::Layer(unsigned int _numNeuronsThis, unsigned int _numNeuronsPrevious){
     weight = Narray(_numNeuronsThis, _numNeuronsPrevious);
-
     bias = Narray(_numNeuronsThis, 1);
 }
 
@@ -35,7 +34,7 @@ void Layer::fillValue(Narray &actual){
 
 // Funcao de ativacao dos neuronios da camada
 Narray Layer::activate(Narray previousValues){
-    for(int i = 0; i < previousValues.colunm; i++){
+    for(int i = 0; i < previousValues.row; i++){
         zeta = ((weight.getRow(i)*previousValues) + bias.values[i][0]);
         value = zeta(sigmoid);
     }

@@ -6,7 +6,6 @@ enum Type
     EXEC
 };
 
-
 void printUsage();
 Type readInput(std::string str);
 void treatInvalidInput(std::string str);
@@ -21,20 +20,25 @@ int main(int argc, char* argv[]){
     std::string str(argv[1]);
     treatInvalidInput(str);
     Type type = readInput(str);
+
+    std::string answer;
     
     switch (type)
     {
-        case TRAIN:            
-            /* Codigo para treinamento da rede */
+        case TRAIN:    
+            /* Codigo para treinamento da rede */         
             break;
             
         case EXEC:
             /* Codigo para execucao normal da rede */
+            answer = execute();
             break;
 
         default:
             break;
     }
+
+    std::cout << answer << std::endl;
 
     return 0;
 }

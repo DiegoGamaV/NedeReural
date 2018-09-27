@@ -6,7 +6,7 @@
 struct Output {
     
     //Retorna uma string do numero formatado em porcentagem
-    std::string toPercentage(double number);
+    std::string toPercentage(int index, double number);
 
     //Le os valores de ativacao da Layer
     //Retorna as porcentagens e a resposta final
