@@ -7,11 +7,11 @@ const std::string DATA_PATH = "./data/";
 const std::string INPUT_PATH = "./input/image.txt";
 const std::string TRAIN_IMG_PATH = "./data/images-1.ubyte";
 const std::string TRAIN_LABEL_PATH = "./data/labels-1.ubyte";
-const std::string TEST_IMG_PATH = "./data/test-images-1.ubyte";
-const std::string TEST_LABEL_PATH = "./data/test-labels-1.ubyte";
+const std::string TEST_IMG_PATH = "./data/images-2.ubyte";
+const std::string TEST_LABEL_PATH = "./data/labels-2.ubyte";
 const int BATCH_SIZE = 10;
 const int TRAIN_SIZE = 100;
-const int EPOCH_AMOUNT = 1; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
+const int EPOCH_AMOUNT = 200; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
 
 Network network;
 
@@ -56,27 +56,24 @@ void train(){
 
     /* Computar os conjuntos de treino e teste */
     trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH);
-    
-    // testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH);
+    testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH);
+    testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH);
+    std::random_shuffle(trainSet.begin(), trainSet.end());
     reducedTrainSet = computeReducedTrain(trainSet);
+    
 
     int batchAmount = reducedTrainSet.size() / BATCH_SIZE;
 
+    std::cout << "Vamos preparar o batch" << std::endl;
     /* Executar e testar epocas de treino */
     for (int i = 0; i < EPOCH_AMOUNT; i++) {
         
         network.trainingEpoch(reducedTrainSet, BATCH_SIZE, batchAmount);
-
-        // int correctCnt = network.testEpoch(testSet);
+        int correctCnt = network.testEpoch(testSet);
         int total = reducedTrainSet.size();
 
-        // std::cout << "Epoch " << i << correctCnt << "/" << total << std::endl;
-        std::cout << "Epoch #" << i << " - ?" << "/" << total << std::endl;
-
     }
-
     save(reader);
-
 }
 
 // NAO MEXER, GAMBIARRA E DESESPERO ABAIXO

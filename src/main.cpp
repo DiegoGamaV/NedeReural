@@ -12,7 +12,7 @@ Type readInput(std::string str);
 void treatInvalidInput(std::string str);
 
 int main(int argc, char* argv[]){
-
+    std::cout << "VOCE ESTA VIVA?" << std::endl;
     if (argc < 2) {
         printUsage();
         exit(1);

@@ -143,14 +143,22 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
     Narray hiddenBiases = Narray(hidden.bias.row, 1);
     Narray outputBiases = Narray(output.bias.row, 1);
 
+    // std::cout << "3.3" << std::endl;
+
     Data desiredChanges;
+    // std::cout << "3.3001" << std::endl;
     Data averageDesiredChanges = Data(hiddenWeights, outputWeights, hiddenBiases, outputBiases);
+    // std::cout << "3.3002" << std::endl;
+    // std::cout << "3.301" << std::endl;
 
     for (int i = 0; i < size; i++){
         sample = minibatch[i];
-        imageData = sample.imageData;
-        feedfoward(imageData);
+        imageData <<= sample.imageData;
         
+        // std::cout << "3.31" << std::endl;
+        feedfoward(imageData);
+        // std::cout << "3.32" << std::endl;
+
         //cost = quadraticCost(output, sample.representedValue);
         //averageCost = averageCost + cost;
 
@@ -160,7 +168,7 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
 
         averageDesiredChanges = averageDesiredChanges + desiredChanges;
     }
-
+    // std::cout << "3.4" << std::endl;
     //averageCost = averageCost / size;
 
     averageDesiredChanges = averageDesiredChanges / size;
@@ -170,9 +178,12 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
 
 void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int batchSize, int batchAmount){
 
+    // std::cout << "1" << std::endl;
+
     std::random_shuffle(trainingSamples.begin(), trainingSamples.end());
     TrainingExample miniBatches[batchAmount][batchSize];
-
+    
+    // std::cout << "2" << std::endl;
     // popula os mini-batches
     int k = 0;
     for (int i = 0; i < batchAmount; i++){
@@ -180,18 +191,24 @@ void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int ba
             miniBatches[i][j] = trainingSamples[k++]; 
         }
     }
-
+    
+    // std::cout << "3" << std::endl;
+    
     Data changes;
 
     // executa os treinos e faz as mudancas
     // para cada minibatch
     for (int i = 0; i < batchAmount; i++){
+        // std::cout << "3.1" << std::endl;
         changes = minibatchEvaluation(miniBatches[i], batchSize);
+        // std::cout << "3.2" << std::endl;
         output.weight = output.weight + changes.weightsOutput;
         output.bias = output.bias + changes.biasesOutput;
         hidden.weight = hidden.weight + changes.weightsHidden;
         hidden.bias = hidden.bias + changes.biasesHidden;
     }
+
+    // std::cout << "4" << std::endl;
 }
 
 // Retorna a quantidade de acertos da rede neural para um conjunto

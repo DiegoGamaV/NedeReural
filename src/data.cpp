@@ -3,11 +3,13 @@
 
 
 Data::Data(Narray _hiddenWeights, Narray _outputWeights, Narray _hiddenBiases, Narray _outputBiases){
-    weightsHidden = _hiddenWeights;
-    weightsOutput = _outputWeights;
-    biasesHidden = _hiddenBiases;
-    biasesOutput = _outputBiases;
-
+    // std::cout << "Sete de setao" << std::endl;
+    weightsHidden <<= _hiddenWeights;
+    // std::cout << "Sete de setao" << std::endl;
+    weightsOutput <<= _outputWeights;
+    biasesHidden <<= _hiddenBiases;
+    biasesOutput <<= _outputBiases;
+    // std::cout << "Sete de setao" << std::endl;
 }
 
 Data::Data(){
