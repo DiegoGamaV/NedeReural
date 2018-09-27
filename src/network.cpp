@@ -154,3 +154,28 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
 
     return averageDesiredChanges;
 }
+
+void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int batchSize, int batchAmount){
+
+    std::random_shuffle(trainingSamples.begin(), trainingSamples.end());
+    TrainingExample miniBatches[batchAmount][batchSize];
+
+    // popula os mini-batches
+    for (int i = 0; i < batchAmount; i++){
+        for (int j = 0; j < batchSize; j++){
+            miniBatches[i][j] = trainingSamples[j]; 
+        }
+    }
+
+    Data changes;
+
+    // executa os treinos e faz as mudancas
+    // para cada minibatch
+    for (int i = 0; i < batchAmount; i++){
+        changes = minibatchEvaluation(miniBatches[i], batchSize);
+        output.weight = output.weight + changes.weightsOutput;
+        output.bias = output.bias + changes.biasesOutput;
+        hidden.weight = hidden.weight + changes.weightsHidden;
+        hidden.bias = hidden.bias + changes.biasesHidden;
+    }
+}
