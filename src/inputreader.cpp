@@ -2,7 +2,7 @@
 
 // transforma os valores no arquivo em um Narray
 Narray InputReader::readMatrix(std::string path, int row, int column){
-    std::ifstream archive (path);
+    std::ifstream archive (path.c_str());
 
     Narray ret = Narray(row, column);
     for(int i = 0; i < row; i++){
@@ -32,7 +32,7 @@ std::vector<std::string> InputReader::getDirectory(std::string path){
 
 // verifica se o arquivo esta vazio
 bool InputReader::empty(std::string path){
-    std::ifstream archive (path);
+    std::ifstream archive (path.c_str(), std::ios::ate);
     return archive.tellg() == 0;
 }
 
@@ -47,7 +47,7 @@ void clear(std::string path){
 
 // Preenche o arquivo com os valores da matriz
 void InputReader::fillArchive(std::string path, Narray content){
-    std::ofstream archive (path);
+    std::ofstream archive (path.c_str());
 
     for(int i = 0; i < content.row; i++){
         for(int j = 0; j < content.colunm; j++){
@@ -72,9 +72,9 @@ TrainingExample InputReader::createTrainingExample(int foreseen, Narray activity
 int InputReader::getforeseen(std::string path){
     bool number = false;
     for(int i = 0; i < path.size(); i++){
-        if(path[i] == '-') number = true;
-
         if(number) return path[i]-'0';
+
+        if(path[i] == '-') number = true;
     }
 }
 

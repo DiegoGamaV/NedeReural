@@ -3,8 +3,8 @@
 //Recebe o numero atual e a chance entre 0 e 1 de ser o mesmo
 //Retorna uma string formatada do numero em porcentagem
 std::string toPercentage(int index, double number) {
-    char *ret;
-    sprintf(ret, "[%d - %.2lf%%]", index, number);
+    char ret[100];
+    int n = sprintf(ret, "[%d - %.2lf%%]", index, number);
 
     return ret;
 }
