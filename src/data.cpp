@@ -39,3 +39,10 @@ Data Data::operator/ (const double &a){
 
     return ret;
 }
+
+void Data::zeroValues(){
+    weightsHidden.zeroValues();
+    weightsOutput.zeroValues();
+    biasesHidden.zeroValues();
+    biasesOutput.zeroValues();
+}
