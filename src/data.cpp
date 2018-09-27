@@ -1,4 +1,5 @@
 #include "data.h"
+#include "debug.h"
 
 
 Data::Data(Narray _hiddenWeights, Narray _outputWeights, Narray _hiddenBiases, Narray _outputBiases){
@@ -19,7 +20,9 @@ Data::Data(){
 // Somar datas
 Data Data::operator+ (const Data &a){
 
+
     Data ret = Data();
+
     ret.weightsHidden = weightsHidden + a.weightsHidden;
     ret.weightsOutput = weightsOutput + a.weightsOutput;
     ret.biasesOutput = biasesOutput + a.biasesOutput;

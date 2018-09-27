@@ -45,9 +45,9 @@ struct InputReader{
     std::vector<TrainingExample> binaryTrainings(std::string image_path, std::string label_path);
 
     // Recebe o diretorio das informacoes da rede e retorna um data
-    Data fileToData(std::string path);
+    void fileToData(std::string path, Data &data);
 
     // Recebe um data das informacoes da rede e coloca em arquivos
     // dentro de um certo diretorio
-    void dataToFile(std::string path, Data data);
+    void dataToFile(std::string path, Data &data);
 };

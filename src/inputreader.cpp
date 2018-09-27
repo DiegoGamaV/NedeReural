@@ -105,17 +105,15 @@ std::vector<TrainingExample> InputReader::makeTrainings(std::string path, int ro
     return ret;
 }
 
-Data InputReader::fileToData(std::string path){
+void InputReader::fileToData(std::string path, Data &data){
     std::ifstream input_file(path, std::ios::binary);
-    Data data;
-    input_file.read((char*) &data, sizeof (data));
+    input_file.read(reinterpret_cast<char*> (&data), sizeof (Data));
     input_file.close();
-    return data;
 }
 
-void InputReader::dataToFile(std::string path, Data data){
+void InputReader::dataToFile(std::string path, Data &data){
     std::ofstream output_file(path, std::ios::binary);
-    output_file.write((char*) &data, sizeof(data));
+    output_file.write(reinterpret_cast<char*> (&data), sizeof(Data));
     output_file.close();
 }
 

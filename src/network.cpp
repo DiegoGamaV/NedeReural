@@ -17,6 +17,7 @@ Network::Network(int pixels, int sizeHidden){
     hidden = Layer(sizeHidden, pixels);
     output = Layer(10, sizeHidden);
     input = Layer(pixels, 0);
+
 }
 
 // Constroi uma rede recebendo todas as informacoes dela
@@ -49,10 +50,6 @@ Data Network::backpropagation(Narray expected){
         A_output = output.value.values[i][0];
         Z_output = output.zeta.values[i][0];
         y = expected.values[i][0];
-
-        DEBUG_MATRIX(output.zeta);
-        DEBUG_TYPE(Z_output);
-        DEBUG_TYPE(y);
 
         // Derivada parcial (da/dz) * (dC0/da)
         double recurrentPart = derivateSigmoid(Z_output) * 2 * (A_output - y);
@@ -143,8 +140,9 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
     // TODO: Zerar narrays
     Narray hiddenWeights = Narray(hidden.weight.row, hidden.weight.colunm);
     Narray outputWeights = Narray(output.weight.row, output.weight.colunm);
-    Narray hiddenBiases = Narray(hidden.bias.row, 0);
-    Narray outputBiases = Narray(output.bias.row, 0);
+    Narray hiddenBiases = Narray(hidden.bias.row, 1);
+    Narray outputBiases = Narray(output.bias.row, 1);
+
     Data desiredChanges;
     Data averageDesiredChanges = Data(hiddenWeights, outputWeights, hiddenBiases, outputBiases);
 
@@ -158,12 +156,7 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
 
         Narray expected = buildExpectedOutput(sample.representedValue);
 
-        DEBUG_MATRIX(expected);
-        std::cout << "na moral vai se fuder" << std::endl;
         desiredChanges = backpropagation(expected);
-
-        DEBUG_TEST();
-        // DEBUG_MATRIX(desiredChanges.biasesOutput);
 
         averageDesiredChanges = averageDesiredChanges + desiredChanges;
     }
