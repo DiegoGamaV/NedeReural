@@ -55,9 +55,8 @@ void train(){
 
     /* Computar os conjuntos de treino e teste */
     trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH);
-    DEBUG_TEST();
-    testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH);
-    DEBUG_TEST();
+    
+    // testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH);
     reducedTrainSet = computeReducedTrain(trainSet);
 
     int batchAmount = reducedTrainSet.size() / BATCH_SIZE;
@@ -65,13 +64,13 @@ void train(){
     /* Executar e testar epocas de treino */
     for (int i = 0; i < EPOCH_AMOUNT; i++) {
         
-
         network.trainingEpoch(reducedTrainSet, BATCH_SIZE, batchAmount);
 
-        int correctCnt = network.testEpoch(testSet);
+        // int correctCnt = network.testEpoch(testSet);
         int total = reducedTrainSet.size();
 
-        std::cout << "Epoch " << i << correctCnt << "/" << total << std::endl;
+        // std::cout << "Epoch " << i << correctCnt << "/" << total << std::endl;
+        std::cout << "Epoch " << i << "?" << "/" << total << std::endl;
     }
 }
 

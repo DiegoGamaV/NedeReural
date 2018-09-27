@@ -9,12 +9,14 @@ Layer input;
 Network::Network(){
     hidden = Layer(16, 784);
     output = Layer(10, 16);
+    input = Layer(784, 0);
 }
 
 // Constroi uma network com valores arbitrarios
 Network::Network(int pixels, int sizeHidden){
     hidden = Layer(sizeHidden, pixels);
     output = Layer(10, sizeHidden);
+    input = Layer(pixels, 0);
 }
 
 // Constroi uma rede recebendo todas as informacoes dela
@@ -27,15 +29,17 @@ Network::Network(int pixels, int sizeHidden, Data data){
 }
 
 void Network::feedfoward(Narray activation){
-    
+
+    input.value = activation;
     Narray hidden_result = hidden.activate(activation);
     output.activate(hidden_result);
 }
 
 
 Data Network::backpropagation(Narray expected){
-    Data data = Data();
-    
+    Data data = Data(hidden.weight, output.weight, hidden.bias, output.bias);
+    data.zeroValues();
+
     // TODO: Zerar data
     double A_output, A_hidden, A_input, Z_output, Z_hidden, y;
 
@@ -45,6 +49,10 @@ Data Network::backpropagation(Narray expected){
         A_output = output.value.values[i][0];
         Z_output = output.zeta.values[i][0];
         y = expected.values[i][0];
+
+        DEBUG_MATRIX(output.zeta);
+        DEBUG_TYPE(Z_output);
+        DEBUG_TYPE(y);
 
         // Derivada parcial (da/dz) * (dC0/da)
         double recurrentPart = derivateSigmoid(Z_output) * 2 * (A_output - y);
@@ -68,7 +76,7 @@ Data Network::backpropagation(Narray expected){
 
             // Iterar pelos pesos entre a camada input e hidden
             for (int k = 0; k < input.numNeuronsThis; k++){
-
+                A_input = input.value.values[k][0];
                 // (dz/dw) * (da/dz) * (dz/da) * recurrentPart
                 double calc = A_input * internalRecurrent;
 
@@ -150,7 +158,12 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
 
         Narray expected = buildExpectedOutput(sample.representedValue);
 
+        DEBUG_MATRIX(expected);
+        std::cout << "na moral vai se fuder" << std::endl;
         desiredChanges = backpropagation(expected);
+
+        DEBUG_TEST();
+        // DEBUG_MATRIX(desiredChanges.biasesOutput);
 
         averageDesiredChanges = averageDesiredChanges + desiredChanges;
     }

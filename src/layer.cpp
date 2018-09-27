@@ -3,6 +3,8 @@
 
 // implementacao do construtor
 Layer::Layer(unsigned int _numNeuronsThis, unsigned int _numNeuronsPrevious){
+    numNeuronsThis = _numNeuronsThis;
+    numNeuronsPrevious = _numNeuronsPrevious;
     weight = Narray(_numNeuronsThis, _numNeuronsPrevious);
     bias = Narray(_numNeuronsThis, 1);
     value = Narray(_numNeuronsThis, 1);
