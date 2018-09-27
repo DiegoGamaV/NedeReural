@@ -43,6 +43,9 @@ struct Narray{
     // Elementos aleatórios na matriz
     void randomValues();
 
+    // Zera os elementos da matriz
+    void zeroValues();
+
     // Pega a linha da matriz
     Narray getRow(int id);
 

@@ -126,6 +126,14 @@ void Narray::randomValues(){
     }
 }
 
+void Narray::zeroValues(){
+    for(register int i = 0; i < row; i++){
+        for(register int j = 0; j < colunm; j++){
+            values[i][j] = 0;
+        }
+    }
+}
+
 // Soma de escalar por matriz
 Narray operator+ (const double &a, const Narray &b){
     Narray ret = Narray(b.row, b.colunm);
