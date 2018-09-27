@@ -23,6 +23,7 @@ std::vector<std::string> InputReader::getDirectory(std::string path){
     dr = opendir(path.c_str());
     if(dr){
         while((drnt = readdir(dr)) != NULL){
+            if( (strcmp(drnt->d_name, ".") == 0) || (strcmp(drnt->d_name, "..") == 0) ) continue;
             ret.push_back(path + "/" + drnt->d_name);
         }
     }else std::cout << "Directory not found :(\n";

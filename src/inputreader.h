@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <string>
+#include <string.h>
 #include <vector>
 #include "doriNum.h"
 #include "trainingExample.h"
