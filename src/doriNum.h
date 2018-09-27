@@ -5,7 +5,7 @@
 #include <string.h>
 #include <time.h>
 #include <algorithm>
-#include <functional>
+#include <iostream>
 
 struct Narray{
 
@@ -33,6 +33,9 @@ struct Narray{
 
     // Mapear valores da matriz
     Narray operator() (double (*f)(double));
+
+    // C++ e facil
+    void operator<<= (const Narray &a);
 
     // Definir matriz de valores
     void operator<< (double** a);

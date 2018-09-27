@@ -105,6 +105,21 @@ Narray Narray::operator* (const Narray &a){
     return ret;
 }
 
+void Narray::operator<<= (const Narray &a){
+    values = (double**) malloc(sizeof(double*) * a.row);
+    for(register int i = 0; i < a.row; i++)
+        values[i] = (double*) malloc(sizeof(double) * a.colunm);
+    
+    row = a.row;
+    colunm = a.colunm;
+    
+    for(register int i = 0; i < row; i++){
+        for(register int j = 0; j < colunm; j++){
+            values[i][j] = a.values[i][j];
+        }
+    }
+}
+
 // Definir matriz de valores
 void Narray::operator<< (double** a){
     memcpy(values, a, sizeof(double) * row * colunm);
