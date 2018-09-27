@@ -1,4 +1,5 @@
 #include "netFlow.h"
+#include "debug.h"
 
 enum Type
 {
@@ -26,7 +27,7 @@ int main(int argc, char* argv[]){
     switch (type)
     {
         case TRAIN:    
-            /* Codigo para treinamento da rede */         
+            answer = train();
             break;
             
         case EXEC:

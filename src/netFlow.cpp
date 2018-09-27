@@ -1,4 +1,5 @@
 #include "netFlow.h"
+#include "debug.h"
 
 const unsigned int NUM_PIXELS = 784;
 const unsigned int SIZE_HIDDEN = 16;
@@ -7,7 +8,6 @@ const std::string INPUT_PATH = "./input/image.txt";
 Network network;
 
 bool existsFile(std::string path);
-// void printMatrix(Narray);
 
 std::string execute() {
 
@@ -16,7 +16,6 @@ std::string execute() {
 
     /* Checar casos de execucao */
     bool isFirstExec = !existsFile(DATA_PATH);
-
 
     if (isFirstExec) {
         network = Network(NUM_PIXELS, SIZE_HIDDEN);
@@ -29,32 +28,24 @@ std::string execute() {
     if (!existsFile(INPUT_PATH)) {
         throw "No file " + INPUT_PATH;
     }
+
     // Criar matriz coluna que representa as ativacoes
     // de entrada da rede neural
     Narray image = reader.readMatrix(INPUT_PATH, NUM_PIXELS, 1);
 
     network.feedfoward(image);
 
-    // printMatrix(network.output.value);
-    // TODO: Corrigir erro nessa linha
-    // std::string answer = output.print(network.output.value);
+    DEBUG_MATRIX(network.output.zeta);
+    std::string answer = output.print(network.output.value);
 
-    
-    // return answer;
-    return " ";
+    return answer;
 }
 
-// void printMatrix(Narray a){
-//     for (int i = 0; i < a.row; i++) {
-//         for (int j = 0; j < a.colunm; j++) {
-//             std::cout << a.values[i][j] << " ";
-//         } std::cout << std::endl;
-//     }
-// }
+std::string train(){
+
+}
 
 bool existsFile(std::string path) {
     InputReader ir;
     return !ir.empty(path);
 }
-
-void train();

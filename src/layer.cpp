@@ -6,6 +6,7 @@ Layer::Layer(unsigned int _numNeuronsThis, unsigned int _numNeuronsPrevious){
     weight = Narray(_numNeuronsThis, _numNeuronsPrevious);
     bias = Narray(_numNeuronsThis, 1);
     value = Narray(_numNeuronsThis, 1);
+    zeta = Narray(_numNeuronsThis, 1);
     weight.randomValues();
     bias.randomValues();
 }
@@ -13,6 +14,7 @@ Layer::Layer(unsigned int _numNeuronsThis, unsigned int _numNeuronsPrevious){
 Layer::Layer() {
     weight = Narray();
     bias = Narray();
+    zeta = Narray();
     value = Narray();
 }
 
@@ -39,10 +41,7 @@ void Layer::fillValue(Narray &actual){
 
 // Funcao de ativacao dos neuronios da camada
 Narray Layer::activate(Narray previousValues){
-    // for(int i = 0; i < numNeuronsThis; i++){
-        // zeta = ((weight.getRow(i)*previousValues) + bias.values[i][0]);
-        zeta = (weight*previousValues) + bias;
-        value = zeta(sigmoid);
-    // }
+    zeta = (weight * previousValues) + bias;
+    value = zeta(sigmoid);
     return value;
 }
