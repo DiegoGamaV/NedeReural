@@ -1,12 +1,19 @@
 #include "data.h"
 
 
-Data::Data(Narray &hiddenWeights, Narray &outputWeights, Narray &hiddenBiases, Narray &outputBiases){
-    //TODO
+Data::Data(Narray _hiddenWeights, Narray _outputWeights, Narray _hiddenBiases, Narray _outputBiases){
+    weightsHidden = _hiddenWeights;
+    weightsOutput = _outputWeights;
+    biasesHidden = _hiddenBiases;
+    biasesOutput = _outputBiases;
+
 }
 
 Data::Data(){
-    //TODO
+    weightsHidden = Narray();
+    weightsOutput = Narray();
+    biasesHidden = Narray();
+    biasesOutput = Narray();
 }
 
 // Somar datas

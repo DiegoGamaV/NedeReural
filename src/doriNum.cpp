@@ -91,8 +91,9 @@ Narray Narray::operator* (const Narray &a){
     }else if(colunm != a.row){
         exit(1);
     }
+
     Narray ret = Narray(row, a.colunm);
-    memset(ret.values, 0, sizeof ret.values);
+
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < a.colunm; j++){
             for(register int k = 0; k < colunm; k++){
@@ -100,6 +101,7 @@ Narray Narray::operator* (const Narray &a){
             }
         }
     }
+
     return ret;
 }
 
@@ -118,7 +120,7 @@ void Narray::randomValues(){
     srand(time(NULL));
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
-            values[i][j] = (rand()%101);
+            values[i][j] = (rand()%3);
             values[i][j] *= rand()%2 == 0? 1 : -1;
         }
     }

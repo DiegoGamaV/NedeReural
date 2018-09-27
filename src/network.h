@@ -45,4 +45,6 @@ struct Network {
     Data minibatchEvaluation(TrainingExample minibatch[], int size);
 
     void trainingEpoch(std::vector<TrainingExample> trainingSamples, int batchSize, int batchAmount);
+
+    int testEpoch(std::vector<TrainingExample> testSamples);
 };  
