@@ -3,6 +3,7 @@
 #include "trainingExample.h"
 #include "data.h"
 #include "layer.h"
+#include <vector>
 
 struct Network {
 
@@ -43,4 +44,5 @@ struct Network {
     // a as mudancas medias desejadas.
     Data minibatchEvaluation(TrainingExample minibatch[], int size);
 
-};
+    void trainingEpoch(std::vector<TrainingExample> trainingSamples, int batchSize, int batchAmount);
+};  

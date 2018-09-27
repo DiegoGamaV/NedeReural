@@ -4,17 +4,8 @@
 //Recebe o numero atual e a chance entre 0 e 1 de ser o mesmo
 //Retorna uma string formatada do numero em porcentagem
 std::string Output::toPercentage(int index, double number) {
-    // TODO: AJEITAR
-
-    
-    // char buffer[50];
-    // // std::string ret;
-    // // printf("[%03d - %.2lf%%]\n", index, number);
-
-    // int n = sprintf(buffer, "[%03d - %.2lf%%]\n", index, number);
-    // printf("%s", buffer);
-
-    // return buffer;
+    char ret[100];
+    int n = sprintf(ret, "[%d - %.2lf%%]", index, number);
 }
 
 //Recebe os valores de ativacao do layer
