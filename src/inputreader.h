@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "debug.h"
 #include <sstream>
 #include <stdlib.h>
 #include <dirent.h>
@@ -10,6 +11,7 @@
 #include <vector>
 #include "doriNum.h"
 #include "trainingExample.h"
+#include "binaryReader.h"
 #include "data.h"
 #include "fstream"
 
@@ -38,6 +40,9 @@ struct InputReader{
 
     // faz o vector de exemplos de treino
     std::vector<TrainingExample> makeTrainings(std::string path, int row, int column);
+
+    // faz o vector dos exemplos de treino a partir de um arquivo binário
+    std::vector<TrainingExample> binaryTrainings(std::string image_path, std::string label_path);
 
     // Recebe o diretorio das informacoes da rede e retorna um data
     Data fileToData(std::string path);

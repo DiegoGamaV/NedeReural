@@ -5,11 +5,13 @@ const unsigned int NUM_PIXELS = 784;
 const unsigned int SIZE_HIDDEN = 16;
 const std::string DATA_PATH = "./data/info.data";
 const std::string INPUT_PATH = "./input/image.txt";
-const std::string TRAIN_PATH = "./training/train_set/";
-const std::string TEST_PATH = "./training/test_set/";
+const std::string TRAIN_IMG_PATH = "./data/images-1.ubyte";
+const std::string TRAIN_LABEL_PATH = "./data/labels-1.ubyte";
+const std::string TEST_IMG_PATH = "./data/test-images-1.ubyte";
+const std::string TEST_LABEL_PATH = "./data/test-labels-1.ubyte";
 const int BATCH_SIZE = 10;
 const int TRAIN_SIZE = 10000;
-const int EPOCH_AMOUNT = 100; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
+const int EPOCH_AMOUNT = 1; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
 
 Network network;
 
@@ -52,8 +54,10 @@ void train(){
     std::vector<TrainingExample> reducedTrainSet;
 
     /* Computar os conjuntos de treino e teste */
-    trainSet = reader.makeTrainings(TRAIN_PATH, NUM_PIXELS, 1);
-    testSet = reader.makeTrainings(TEST_PATH, NUM_PIXELS, 1);
+    trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH);
+    DEBUG_TEST();
+    testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH);
+    DEBUG_TEST();
     reducedTrainSet = computeReducedTrain(trainSet);
 
     int batchAmount = reducedTrainSet.size() / BATCH_SIZE;
@@ -61,6 +65,7 @@ void train(){
     /* Executar e testar epocas de treino */
     for (int i = 0; i < EPOCH_AMOUNT; i++) {
         
+
         network.trainingEpoch(reducedTrainSet, BATCH_SIZE, batchAmount);
 
         int correctCnt = network.testEpoch(testSet);

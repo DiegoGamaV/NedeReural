@@ -1,7 +1,9 @@
 #pragma once
+
 #include "network.h"
 #include "inputreader.h"
 #include "output.h"
+#include "binaryReader.h"
 
 // Funcao que executa a rede neural
 // apenas para fornecer uma resposta

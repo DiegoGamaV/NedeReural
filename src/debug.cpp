@@ -11,3 +11,7 @@ void DEBUG_MATRIX(Narray a){
 void DEBUG_TEST(){
     std::cout << "D" << std::endl;
 }
+
+void DEBUG_TYPE(int a){
+    std::cout << a << std::endl;
+}

@@ -3,6 +3,7 @@
 #include <fstream>
 #include "doriNum.h"
 #include <vector>
+#include "debug.h"
 
 typedef char byte;
 

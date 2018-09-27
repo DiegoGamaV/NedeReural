@@ -79,6 +79,18 @@ int InputReader::getforeseen(std::string path){
     }
 }
 
+std::vector<TrainingExample> InputReader::binaryTrainings(std::string image_path, std::string label_path){
+    std::vector <std::pair< Narray, byte > > ret;
+    binaryReader br = binaryReader(image_path, label_path);
+    ret = br.allData();
+    std::vector <TrainingExample> top;
+    for(register int i = 0; i < ret.size(); i++){
+        TrainingExample aux = TrainingExample(ret[i].first, ret[i].second);
+        top.push_back(aux);
+    }
+    return top;
+}
+
 // Faz um vector de treinos
 // Retorna o vector criado
 std::vector<TrainingExample> InputReader::makeTrainings(std::string path, int row, int column){
