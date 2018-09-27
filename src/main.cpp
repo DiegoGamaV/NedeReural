@@ -22,12 +22,13 @@ int main(int argc, char* argv[]){
     treatInvalidInput(str);
     Type type = readInput(str);
 
-    std::string answer;
+    std::string answer = "";
     
     switch (type)
     {
-        case TRAIN:    
-            answer = train();
+        case TRAIN:
+            /* Codigo para treinamento da rede */
+            train();
             break;
             
         case EXEC:

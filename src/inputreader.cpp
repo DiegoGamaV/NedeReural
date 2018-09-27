@@ -96,7 +96,7 @@ Data InputReader::fileToData(std::string path){
     std::ifstream input_file(path, std::ios::binary);
     Data data;
     input_file.read((char*) &data, sizeof (data));
-
+    input_file.close();
     return data;
 }
 

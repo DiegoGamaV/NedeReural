@@ -168,9 +168,10 @@ void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int ba
     TrainingExample miniBatches[batchAmount][batchSize];
 
     // popula os mini-batches
+    int k = 0;
     for (int i = 0; i < batchAmount; i++){
         for (int j = 0; j < batchSize; j++){
-            miniBatches[i][j] = trainingSamples[j]; 
+            miniBatches[i][j] = trainingSamples[k++]; 
         }
     }
 
@@ -185,4 +186,28 @@ void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int ba
         hidden.weight = hidden.weight + changes.weightsHidden;
         hidden.bias = hidden.bias + changes.biasesHidden;
     }
+}
+
+// Retorna a quantidade de acertos da rede neural para um conjunto
+// de test samples
+int Network::testEpoch(std::vector<TrainingExample> testSamples){
+    int correctAnswerCnt = 0;
+
+    for (TrainingExample test : testSamples){
+
+        feedfoward(test.imageData);
+
+        int answer;
+        double higher = output.value.values[0][0];
+
+        for (int i = 0; i < 10; i++) {
+            if (output.value.values[i][0] > higher) {
+                answer = i;
+            }
+        }
+        if (answer == test.representedValue) {
+            correctAnswerCnt++;
+        }
+    }
+    return correctAnswerCnt;
 }

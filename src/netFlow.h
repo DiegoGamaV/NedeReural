@@ -10,4 +10,4 @@ std::string execute();
 
 // Funcao que executa a rede neural no
 // modo de treinamento
-std::string train();
+void train();

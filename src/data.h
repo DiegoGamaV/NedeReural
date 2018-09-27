@@ -18,7 +18,7 @@ struct Data {
     Narray biasesOutput;
 
     // Construtor do tipo data.
-    Data(Narray &hiddenWeights, Narray &outputWeights, Narray &hiddenBiases, Narray &outputBiases);
+    Data(Narray _hiddenWeights, Narray _outputWeights, Narray _hiddenBiases, Narray _outputBiases);
     Data();
 
     // Somar Datas
