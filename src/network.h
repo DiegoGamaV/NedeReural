@@ -35,7 +35,7 @@ struct Network {
     // a as mudancas medias desejadas.
     Data minibatchEvaluation(TrainingExample minibatch[], int size);
 
-    void trainingEpoch(std::vector<TrainingExample> trainingSamples, int batchSize, int batchAmount);
+    void trainingEpoch(std::vector<TrainingExample> trainingSamples, int batchSize, int batchAmount, double rate);
 
     int testEpoch(std::vector<TrainingExample> testSamples);
 

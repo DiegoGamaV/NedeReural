@@ -44,41 +44,25 @@ Data Network::backpropagation(Narray expected){
     
     double A_output, A_hidden, A_input, Z_output, Z_hidden, y;
 
-    // Iterar pelos neuronios da camada output
-    for (int i = 0; i < output.numNeuronsThis; i++){
+    Narray outputError(output.numNeuronsThis, 1);
 
-        A_output = output.value.values[i][0];
-        Z_output = output.zeta.values[i][0];
-        y = expected.values[i][0];
+    log("Calculando o vetor de erro da camada Output");    
+    outputError = hadamard((output.value - expected), output.zeta(derivateSigmoid)); 
 
-        // Derivada parcial (da/dz) * (dC0/da)
-        double recurrentPart = derivateSigmoid(Z_output) * 2 * (A_output - y);
-        // Gerar modificacao necessaria no bias do output
-        data.biasesOutput.values[i][0] -= recurrentPart;
+    Narray hiddenError(hidden.numNeuronsThis, 1);
 
-        // Iterar pelos neuronios da camada hidden
-        for (int j = 0; j < hidden.numNeuronsThis; j++){
-            double W_output = output.weight.values[i][j];
-            A_hidden = hidden.value.values[j][0];
-            Z_hidden = hidden.zeta.values[j][0];
+    log("Calculando o vetor de erro da camada Hidden");
+    hiddenError = hadamard((output.weight.transposta() * outputError), hidden.zeta(derivateSigmoid));
 
-            // Guardar a mudanca necessaria para esse peso 
-            data.weightsOutput.values[i][j] -= A_hidden * recurrentPart;
-            
-            double internalRecurrent = derivateSigmoid(Z_hidden) * W_output * recurrentPart;
+    log("Computando as mudancas na output desejadas para este treino");
+    data.weightsOutput = outputError * hidden.value.transposta();
+    data.biasesOutput = outputError;
 
-            // Atualiza biases da hidden
-            data.biasesHidden.values[j][0] -= internalRecurrent;
+    log("Computando as mudancas na hidden desejadas para este treino");
 
-            // Iterar pelos pesos entre a camada input e hidden
-            for (int k = 0; k < input.numNeuronsThis; k++){
-                A_input = input.value.values[k][0];
-                // (dz/dw) * (da/dz) * (dz/da) * recurrentPart
-                double calc = A_input * internalRecurrent;
-                data.weightsHidden.values[j][k] -= calc;
-            }
-        }
-    }
+    data.weightsHidden = hiddenError * input.value.transposta();
+    data.biasesHidden = hiddenError;
+    
     log("Terminando de computar backpropagation");
     return data;
 }
@@ -117,13 +101,8 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
     log("Comecando a execucao de cada sample do minibatch");
     for (int i = 0; i < size; i++){
         sample = minibatch[i];
-        //imageData <<= sample.imageData;
-        imageData = Narray(sample.imageData);
         log("Iniciando feedfoward de um sample");
-        feedfoward(imageData);
-
-        //cost = quadraticCost(output, sample.representedValue);
-        //averageCost = averageCost + cost;
+        feedfoward(sample.imageData);
 
         log("Construindo matriz de output esperado");
         Narray expected = buildExpectedOutput(sample.representedValue);
@@ -132,6 +111,7 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
         desiredChanges = backpropagation(expected);
 
         log("Computando quais sao as mudancas desejadas");
+
         averageDesiredChanges = averageDesiredChanges + desiredChanges;
     }
     //averageCost = averageCost / size;
@@ -146,7 +126,7 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
     return averageDesiredChanges;
 }
 
-void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int batchSize, int batchAmount){
+void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int batchSize, int batchAmount, double rate){
 
     log("Randomizando trainingSamples");
     std::random_shuffle(trainingSamples.begin(), trainingSamples.end());
@@ -170,19 +150,19 @@ void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int ba
 
         log("Iniciando minibatch evaluation");
         changes = minibatchEvaluation(miniBatches[i], batchSize);
-
+        
         log("Salvando mudanças do minibatch evaluation");
-        output.weight = output.weight + changes.weightsOutput;
-        output.bias = output.bias + changes.biasesOutput;
-        hidden.weight = hidden.weight + changes.weightsHidden;
-        hidden.bias = hidden.bias + changes.biasesHidden;
+        output.weight = output.weight - rate * changes.weightsOutput;
+        output.bias = output.bias - rate * changes.biasesOutput;
+        hidden.weight = hidden.weight - rate * changes.weightsHidden;
+        hidden.bias = hidden.bias - rate * changes.biasesHidden;
     }
-    changes.close();
-    for (int i = 0; i < batchAmount; i++){
-        for (int j = 0; j < batchSize; j++){
-            miniBatches[i][j].close(); 
-        }
-    }
+    // changes.close();
+    // for (int i = 0; i < batchAmount; i++){
+    //     for (int j = 0; j < batchSize; j++){
+    //         miniBatches[i][j].close(); 
+    //     }
+    // }
 }
 
 // Retorna a quantidade de acertos da rede neural para um conjunto

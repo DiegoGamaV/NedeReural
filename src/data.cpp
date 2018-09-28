@@ -28,9 +28,8 @@ Data::Data(){
 // Somar datas
 Data Data::operator+ (const Data &a){
 
-
     Data ret = Data();
-
+    
     ret.weightsHidden = weightsHidden + a.weightsHidden;
     ret.weightsOutput = weightsOutput + a.weightsOutput;
     ret.biasesOutput = biasesOutput + a.biasesOutput;

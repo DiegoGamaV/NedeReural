@@ -74,3 +74,6 @@ Narray operator* (const Narray &a, const double &b);
 double sigmoid(double val);
 
 double derivateSigmoid(double val);
+
+// Produto de hadamard
+Narray hadamard(const Narray &a, const Narray &b);
