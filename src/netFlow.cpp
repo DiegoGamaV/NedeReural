@@ -72,7 +72,7 @@ void train(){
     /* Computar os conjuntos de treino e teste */
     //while(true);
     log("Lendo o trainSet");
-    trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH, 1);
+    trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH, 0.2);
     log("Lendo o testSet");
     testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH, 1);
     /* Executar e testar epocas de treino */
@@ -98,7 +98,7 @@ void train(){
         int correctCnt = network.testEpoch(testSet);
 
         log("Printando qualidade da epoch");
-        printEpoch(i, correctCnt, BATCH_SIZE * batchAmount);
+        printEpoch(i, correctCnt, 100000);
 
         log("Salvando as informacoes da rede");
         save(reader);
@@ -184,6 +184,7 @@ Narray desenhar(){
         cv::imshow("Desenhe",img);
         int k = cv::waitKey(1) & 0xFF;
         if (k == 's'){
+            cv::GaussianBlur( img, img, cv::Size( 1, 1), 0);
             Narray ret(28 * 28, 1);
             for(int i = 0; i < 28; i++){
                 for(int j = 0; j < 28; j++){

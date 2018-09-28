@@ -269,11 +269,6 @@ Narray Narray::transposta(){
 }
 
 void Narray::close(){
-    for(register int i = 0; i < row; i++){
-        free(values[i]);
-    }
-    row = 0;
-    colunm = 0;
 }
 
 double sigmoid(double val){
