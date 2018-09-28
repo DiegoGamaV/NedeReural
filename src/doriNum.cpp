@@ -135,7 +135,7 @@ void Narray::randomValues(){
     srand(time(NULL));
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
-            values[i][j] = rand()/(RAND_MAX / 3.5);
+            values[i][j] = rand()/(RAND_MAX / 1);
             values[i][j] *= rand()%2 == 0? 1 : -1;  
         }
     }
