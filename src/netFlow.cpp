@@ -12,8 +12,8 @@ const std::string TRAIN_LABEL_PATH = "./data/labels-1.ubyte";
 const std::string TEST_IMG_PATH = "./data/images-2.ubyte";
 const std::string TEST_LABEL_PATH = "./data/labels-2.ubyte";
 const int BATCH_SIZE = 10;
-const int TRAIN_SIZE = 100;
-const int EPOCH_AMOUNT = 200; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
+const int TRAIN_SIZE = 500;
+const int EPOCH_AMOUNT = 100; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
 
 Network network;
 
@@ -71,6 +71,9 @@ void train(){
     log("Randomizando o trainSet");
     std::random_shuffle(trainSet.begin(), trainSet.end());
 
+    log("Randomizando o testSet");
+    std::random_shuffle(testSet.begin(), testSet.end());
+
     log("Gerando trainSet reduzido");
     reducedTrainSet = computeReducedTrain(trainSet);
     
@@ -98,7 +101,8 @@ void train(){
 void printEpoch(int epoch, int correct, int total) {
     double quality = correct * 100.0 / total;
     std::cout << "EPOCH #" << epoch << ": " << std::fixed 
-    << std::setprecision(2) << quality << "\%" << std::endl;
+    << std::setprecision(2) << quality << "\%" <<
+    " ACERTOS = " << correct << std::endl;
 }
 
 // NAO MEXER, GAMBIARRA E DESESPERO ABAIXO
@@ -136,12 +140,13 @@ bool existsFile(std::string path) {
 void initializeNetwork(InputReader reader){
     /* Checar casos de execucao */
     bool isFirstExec = !existsFile(DATA_PATH);
-    if (true) {
+    if (isFirstExec) {
         network = Network(NUM_PIXELS, SIZE_HIDDEN);
     } else {
         Network tmp = Network();
         Data info = createSampleData(tmp);
 
+        log("Lendo informacoes de treino da rede");
         info.weightsHidden = reader.readMatrix(DATA_PATH + "weightsHidden.txt", 
                              info.weightsHidden.row, info.weightsHidden.colunm);
         info.weightsOutput = reader.readMatrix(DATA_PATH + "weightsOutput.txt", 
@@ -151,6 +156,7 @@ void initializeNetwork(InputReader reader){
         info.biasesHidden = reader.readMatrix(DATA_PATH + "biasesHidden.txt", 
                              info.biasesHidden.row, info.biasesHidden.colunm);
 
+        log("Criando rede com informacoes customizadas de treino");
         network = Network(NUM_PIXELS, SIZE_HIDDEN, info);
     }
 }
