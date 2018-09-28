@@ -1,0 +1,9 @@
+#!/bin/bash
+
+make clean
+make
+
+for (( c=1; c<=$1; c++ ))
+do
+    ./run --train
+done
