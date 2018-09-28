@@ -1,5 +1,6 @@
 #include "network.h"
 #include "debug.h"
+#include "logger.h"
 
 Layer hidden;
 Layer output;
@@ -38,10 +39,13 @@ void Network::feedfoward(Narray activation){
 
 
 Data Network::backpropagation(Narray expected){
+    log("Iniciando Data com valores arbitrarios");
     Data data = Data(hidden.weight, output.weight, hidden.bias, output.bias);
+
+    log("Zerando valores do Data gerado");
     data.zeroValues();
 
-    // TODO: Zerar data
+    
     double A_output, A_hidden, A_input, Z_output, Z_hidden, y;
 
     // Iterar pelos neuronios da camada output
@@ -65,7 +69,6 @@ Data Network::backpropagation(Narray expected){
             // Guardar a mudanca necessaria para esse peso 
             data.weightsOutput.values[i][j] -= A_hidden * recurrentPart;
             
-
             double internalRecurrent = derivateSigmoid(Z_hidden) * W_output * recurrentPart;
 
             // Atualiza biases da hidden
@@ -81,7 +84,7 @@ Data Network::backpropagation(Narray expected){
             }
         }
     }
-
+    log("Terminando de computar backpropagation");
     return data;
 }
 
@@ -143,32 +146,29 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
     Narray hiddenBiases = Narray(hidden.bias.row, 1);
     Narray outputBiases = Narray(output.bias.row, 1);
 
-    // std::cout << "3.3" << std::endl;
-
     Data desiredChanges;
-    // std::cout << "3.3001" << std::endl;
     Data averageDesiredChanges = Data(hiddenWeights, outputWeights, hiddenBiases, outputBiases);
-    // std::cout << "3.3002" << std::endl;
-    // std::cout << "3.301" << std::endl;
 
+    log("Comecando a execucao de cada sample do minibatch");
     for (int i = 0; i < size; i++){
         sample = minibatch[i];
         imageData <<= sample.imageData;
         
-        // std::cout << "3.31" << std::endl;
+        log("Iniciando feedfoward de um sample");
         feedfoward(imageData);
-        // std::cout << "3.32" << std::endl;
 
         //cost = quadraticCost(output, sample.representedValue);
         //averageCost = averageCost + cost;
 
+        log("Construindo matriz de output esperado");
         Narray expected = buildExpectedOutput(sample.representedValue);
 
+        log("Iniciando backpropagation");
         desiredChanges = backpropagation(expected);
 
+        log("Computando quais sao as mudancas desejadas");
         averageDesiredChanges = averageDesiredChanges + desiredChanges;
     }
-    // std::cout << "3.4" << std::endl;
     //averageCost = averageCost / size;
 
     averageDesiredChanges = averageDesiredChanges / size;
@@ -178,12 +178,11 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
 
 void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int batchSize, int batchAmount){
 
-    // std::cout << "1" << std::endl;
-
+    log("Randomizando trainingSamples");
     std::random_shuffle(trainingSamples.begin(), trainingSamples.end());
+
     TrainingExample miniBatches[batchAmount][batchSize];
-    
-    // std::cout << "2" << std::endl;
+
     // popula os mini-batches
     int k = 0;
     for (int i = 0; i < batchAmount; i++){
@@ -191,24 +190,23 @@ void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int ba
             miniBatches[i][j] = trainingSamples[k++]; 
         }
     }
-    
-    // std::cout << "3" << std::endl;
-    
+        
     Data changes;
 
     // executa os treinos e faz as mudancas
     // para cada minibatch
+    log("Comecando a executar os minibatches");
     for (int i = 0; i < batchAmount; i++){
-        // std::cout << "3.1" << std::endl;
+
+        log("Iniciando minibatch evaluation");
         changes = minibatchEvaluation(miniBatches[i], batchSize);
-        // std::cout << "3.2" << std::endl;
+
+        log("Salvando mudanças do minibatch evaluation");
         output.weight = output.weight + changes.weightsOutput;
         output.bias = output.bias + changes.biasesOutput;
         hidden.weight = hidden.weight + changes.weightsHidden;
         hidden.bias = hidden.bias + changes.biasesHidden;
     }
-
-    // std::cout << "4" << std::endl;
 }
 
 // Retorna a quantidade de acertos da rede neural para um conjunto
