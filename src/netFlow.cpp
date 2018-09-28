@@ -13,7 +13,7 @@ const std::string TEST_IMG_PATH = "./data/images-2.ubyte";
 const std::string TEST_LABEL_PATH = "./data/labels-2.ubyte";
 const int BATCH_SIZE = 20;
 const int TRAIN_SIZE = 1000;
-const int EPOCH_AMOUNT = 30; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
+const int EPOCH_AMOUNT = 5; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
 
 Network network;
 
@@ -65,25 +65,23 @@ void train(){
     /* Computar os conjuntos de treino e teste */
     //while(true);
     log("Lendo o trainSet");
-    trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH, 0.1);
+    trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH, 1);
     log("Lendo o testSet");
-    testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH, 0.3);
-    log("Randomizando o trainSet");
-    std::random_shuffle(trainSet.begin(), trainSet.end());
-
-    log("Randomizando o testSet");
-    std::random_shuffle(testSet.begin(), testSet.end());
-
-    log("Gerando trainSet reduzido");
-    reducedTrainSet = computeReducedTrain(trainSet);
-    
-
-    int batchAmount = reducedTrainSet.size() / BATCH_SIZE;
-
+    testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH, 1);
     /* Executar e testar epocas de treino */
     log("Iniciando execucao das training epochs");
     for (int i = 0; i < EPOCH_AMOUNT; i++) {
+        log("Randomizando o trainSet");
+        std::random_shuffle(trainSet.begin(), trainSet.end());
 
+        log("Randomizando o testSet");
+        std::random_shuffle(testSet.begin(), testSet.end());
+
+        log("Gerando trainSet reduzido");
+        reducedTrainSet = computeReducedTrain(trainSet);
+        
+
+        int batchAmount = reducedTrainSet.size() / BATCH_SIZE;
         log("Inicializando uma training epoch");
         network.trainingEpoch(reducedTrainSet, BATCH_SIZE, batchAmount);
 
