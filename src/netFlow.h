@@ -4,6 +4,7 @@
 #include "inputreader.h"
 #include "output.h"
 #include "binaryReader.h"
+#include <opencv2/opencv.hpp>
 
 // Funcao que executa a rede neural
 // apenas para fornecer uma resposta
@@ -15,3 +16,6 @@ std::string execute();
 void train();
 
 void save(InputReader);
+
+Narray desenhar();
+void draw_circle(int event, int x, int y, int flags, void* param);
