@@ -47,3 +47,10 @@ Narray Layer::activate(Narray previousValues){
     value = zeta(sigmoid);
     return value;
 }
+
+void Layer::close(){
+    weight.close();
+    bias.close();
+    zeta.close();;
+    value.close();;
+}

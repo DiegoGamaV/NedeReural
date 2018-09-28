@@ -1,5 +1,6 @@
 CC=g++
 CFLAGS = -std=c++14
+OPENCV=`pkg-config --libs --cflags opencv`
 
 DEPS = src/*.h
 
@@ -9,10 +10,10 @@ OBJS := $(addsuffix .o,$(basename $(SRCS)))
 all: run
 
 src/%.o: src/%.cpp $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS) $(OPENCV)
 
 run: $(OBJS)
-	$(CC) -o $@ $^ 
+	$(CC) -o $@ $^ $(OPENCV)
 
 clean: 
 	rm -rf src/*.o

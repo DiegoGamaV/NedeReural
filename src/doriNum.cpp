@@ -1,4 +1,5 @@
 #include "doriNum.h"
+#include "debug.h"
 
 // Implementação do construtor
 Narray::Narray(unsigned int _row, unsigned int _colunm){
@@ -11,17 +12,45 @@ Narray::Narray(unsigned int _row, unsigned int _colunm){
     // guarda o tamanho da matriz
     row = _row;
     colunm = _colunm;
-    
-    // insere valores nulos na matriz
-    for(register int i = 0; i < row; i++){
-        for(register int j = 0; j < colunm; j++){
+    for(register int i = 0; i < row; i++)
+        for(register int j = 0; j < colunm; j++)
             values[i][j] = 0;
-        }
-    }
 }
 
 Narray::Narray(){
-    Narray(0, 0);
+    unsigned int _row = 1;
+    unsigned int _colunm = 1;
+    // Aloca dinamicamente a matriz na memória
+    values = (double**) malloc(sizeof(double*) * _row);
+    for(register int i = 0; i < _row; i++)
+        values[i] = (double*) malloc(sizeof(double) * _colunm);
+    
+    // guarda o tamanho da matriz
+    row = _row;
+    colunm = _colunm;
+    for(register int i = 0; i < row; i++)
+        for(register int j = 0; j < colunm; j++)
+            values[i][j] = 0;
+}
+
+Narray::Narray(const Narray &a){
+    unsigned int _row = a.row;
+    unsigned int _colunm = a.colunm;
+    // Aloca dinamicamente a matriz na memória
+    values = (double**) malloc(sizeof(double*) * _row);
+    for(register int i = 0; i < _row; i++)
+        values[i] = (double*) malloc(sizeof(double) * _colunm);
+    
+    // guarda o tamanho da matriz
+    row = _row;
+    colunm = _colunm;
+
+    // insere valores nulos na matriz
+    for(register int i = 0; i < row; i++){
+        for(register int j = 0; j < colunm; j++){
+            values[i][j] = a.values[i][j];
+        }
+    }
 }
 
 // Dividir a matriz por escalar
@@ -76,19 +105,24 @@ Narray Narray::operator() (double (*f)(double)){
 
 // Multiplicação de matrizes
 Narray Narray::operator* (const Narray &a){
+  
     if(std::min(colunm, row) == 1 && std::min(a.colunm, a.row) == 1){
         int range = std::max(colunm, std::max(row, std::max(a.colunm, a.row)));
         Narray ret(range, 1);
         for(register int i = 0; i < range; i++)ret.values[i][0] = 1;
 
-        if(colunm > row)for(register int i = 0; i < colunm; i++)ret.values[i][0] *= values[0][i];
-        else for(register int i = 0; i < colunm; i++)ret.values[i][0] *= values[i][0];
+    //     if(colunm > row)for(register int i = 0; i < colunm; i++)ret.values[i][0] *= values[0][i];
+    //     else for(register int i = 0; i < colunm; i++)ret.values[i][0] *= values[i][0];
 
-        if(a.colunm > a.row)for(register int i = 0; i < colunm; i++)ret.values[i][0] *= a.values[0][i];
-        else for(register int i = 0; i < colunm; i++)ret.values[i][0] *= a.values[i][0];
+    //     if(a.colunm > a.row)for(register int i = 0; i < colunm; i++)ret.values[i][0] *= a.values[0][i];
+    //     else for(register int i = 0; i < colunm; i++)ret.values[i][0] *= a.values[i][0];
 
-        return ret;
-    }else if(colunm != a.row){
+    //     return ret;
+    // }else if(colunm != a.row){
+    //     exit(1);
+    // }
+
+    if(colunm != a.row){
         exit(1);
     }
 
@@ -103,21 +137,6 @@ Narray Narray::operator* (const Narray &a){
     }
 
     return ret;
-}
-
-void Narray::operator<<= (const Narray &a){
-    values = (double**) malloc(sizeof(double*) * a.row);
-    for(register int i = 0; i < a.row; i++)
-        values[i] = (double*) malloc(sizeof(double) * a.colunm);
-    
-    row = a.row;
-    colunm = a.colunm;
-    
-    for(register int i = 0; i < row; i++){
-        for(register int j = 0; j < colunm; j++){
-            values[i][j] = a.values[i][j];
-        }
-    }
 }
 
 // Definir matriz de valores
@@ -135,7 +154,7 @@ void Narray::randomValues(){
     srand(time(NULL));
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
-            values[i][j] = rand()/(RAND_MAX / 1);
+            values[i][j] = rand()/(RAND_MAX / 1.0);
             values[i][j] *= rand()%2 == 0? 1 : -1;  
         }
     }
@@ -198,6 +217,24 @@ Narray operator* (const double &a, const Narray &b){
     return ret;
 }
 
+// Produto de Hadammad
+Narray hadamard(const Narray &a, const Narray &b){
+
+    if(a.row != b.row || a.colunm != b.colunm){
+        exit(1);
+    }
+
+    Narray ret = Narray(a.row, a.colunm);
+
+    for(register int i = 0; i < a.row; i++){
+        for(register int j = 0; j < a.colunm; j++){
+            ret.values[i][j] = b.values[i][j] * a.values[i][j];                
+        }
+    }
+
+    return ret;
+}
+
 // Multiplicação de matriz por escalar
 Narray operator* (const Narray &a, const double &b){
     return b * a;
@@ -227,6 +264,16 @@ Narray Narray::transposta(){
             ret.values[j][i] = values[i][j];
         }
     }
+
+    return ret;
+}
+
+void Narray::close(){
+    for(register int i = 0; i < row; i++){
+        free(values[i]);
+    }
+    row = 0;
+    colunm = 0;
 }
 
 double sigmoid(double val){
