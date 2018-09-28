@@ -16,7 +16,7 @@ std::vector <std::pair<Narray, byte > > binaryReader::allData(){
     gmbARUMAITO(size);
     std::vector < byte > labels;
     byte l;
-    for(register int i = 0; i < size.integer; i++){
+    for(register int i = 0; i < size.integer / 50; i++){
         label.read(&l, 1);
         labels.push_back(l);
     }
@@ -25,7 +25,7 @@ std::vector <std::pair<Narray, byte > > binaryReader::allData(){
     image.read(rows.chars, 4);gmbARUMAITO(rows);
     image.read(colunms.chars, 4);gmbARUMAITO(colunms);
     std::vector < Narray > Narrays;
-    for(int a = 0; a < size.integer; a++){
+    for(int a = 0; a < size.integer / 50; a++){
         Narray temp = Narray(colunms.integer * rows.integer, 1);
         for(register int i = 0; i < rows.integer; i++){
             for(register int j = 0; j < colunms.integer; j++){
@@ -35,9 +35,11 @@ std::vector <std::pair<Narray, byte > > binaryReader::allData(){
         }
         Narrays.push_back(temp);
     }
-    for(register int i = 0; i < size.integer; i++){
+    for(register int i = 0; i < size.integer / 50; i++){
         ret.push_back({Narrays[i], labels[i]});
     }
+    image.close();
+    label.close();
     return ret;
 }
 

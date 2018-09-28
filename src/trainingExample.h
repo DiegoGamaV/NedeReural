@@ -22,4 +22,5 @@ struct TrainingExample {
     TrainingExample(Narray &data, unsigned int _representedValue);
     TrainingExample();
     
+    void close();
 };

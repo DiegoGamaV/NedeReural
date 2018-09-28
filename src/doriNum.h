@@ -18,7 +18,7 @@ struct Narray{
     // Construtor
     Narray(unsigned int _row, unsigned int _colunm);
     Narray();
-
+    Narray(const Narray &a);
     // Operador de dividir todos os elementos por um escalar
     Narray operator/ (const double &a);
 
@@ -33,9 +33,6 @@ struct Narray{
 
     // Mapear valores da matriz
     Narray operator() (double (*f)(double));
-
-    // C++ e facil
-    void operator<<= (const Narray &a);
 
     // Definir matriz de valores
     void operator<< (double** a);
@@ -58,6 +55,8 @@ struct Narray{
     // Pega a matriz transposta
     Narray transposta();
 
+    // Liberar NArray
+    void close();
 };
 
 Narray operator+ (const double &a, const Narray &b);
@@ -75,3 +74,6 @@ Narray operator* (const Narray &a, const double &b);
 double sigmoid(double val);
 
 double derivateSigmoid(double val);
+
+// Produto de hadamard
+Narray hadamard(const Narray &a, const Narray &b);
