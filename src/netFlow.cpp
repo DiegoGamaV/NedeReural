@@ -66,17 +66,27 @@ void train(){
 
 
     /* Computar os conjuntos de treino e teste */
+    //while(true);
     log("Lendo o trainSet");
-    trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH);
+    trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH, 1);
     log("Lendo o testSet");
-    testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH);
-    
 
+    testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH, 1);
 
     /* Executar e testar epocas de treino */
     log("Iniciando execucao das training epochs");
     for (int i = 0; i < EPOCH_AMOUNT; i++) {
+        log("Randomizando o trainSet");
+        std::random_shuffle(trainSet.begin(), trainSet.end());
 
+        log("Randomizando o testSet");
+        std::random_shuffle(testSet.begin(), testSet.end());
+
+        log("Gerando trainSet reduzido");
+        reducedTrainSet = computeReducedTrain(trainSet);
+        
+
+        int batchAmount = reducedTrainSet.size() / BATCH_SIZE;
 
         log("Randomizando o trainSet");
         std::random_shuffle(trainSet.begin(), trainSet.end());
@@ -88,7 +98,7 @@ void train(){
         reducedTrainSet = computeReducedTrain(trainSet);
 
         int batchAmount = reducedTrainSet.size() / BATCH_SIZE;
-
+      
         log("Inicializando uma training epoch");
         network.trainingEpoch(reducedTrainSet, BATCH_SIZE, batchAmount, LEARN_RATE);
 

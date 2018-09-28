@@ -18,5 +18,5 @@ struct binaryReader{
 
     binaryReader(std::string image_path, std::string label_path);
 
-    std::vector <std::pair<Narray, byte > > allData();
+    std::vector <std::pair<Narray, byte > > allData(double fator);
 };

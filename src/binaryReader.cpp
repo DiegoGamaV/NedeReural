@@ -7,7 +7,7 @@ binaryReader::binaryReader(std::string image_path, std::string label_path){
     label.open(label_path, std::ifstream::in);
 }
 
-std::vector <std::pair<Narray, byte > > binaryReader::allData(){
+std::vector <std::pair<Narray, byte > > binaryReader::allData(double fator){
     std::vector <std::pair<Narray, byte > > ret;
     buffer size;
     label.read(size.chars, 4);
@@ -16,7 +16,8 @@ std::vector <std::pair<Narray, byte > > binaryReader::allData(){
     gmbARUMAITO(size);
     std::vector < byte > labels;
     byte l;
-    for(register int i = 0; i < size.integer / 50; i++){
+
+    for(register int i = 0; i < size.integer * fator; i++){
         label.read(&l, 1);
         labels.push_back(l);
     }
@@ -25,8 +26,9 @@ std::vector <std::pair<Narray, byte > > binaryReader::allData(){
     image.read(rows.chars, 4);gmbARUMAITO(rows);
     image.read(colunms.chars, 4);gmbARUMAITO(colunms);
     std::vector < Narray > Narrays;
-    for(int a = 0; a < size.integer / 50; a++){
-        Narray temp = Narray(colunms.integer * rows.integer, 1);
+
+    for(int a = 0; a < size.integer * fator; a++){
+        Narray temp(colunms.integer * rows.integer, 1);
         for(register int i = 0; i < rows.integer; i++){
             for(register int j = 0; j < colunms.integer; j++){
                 image.read(&l, 1);
@@ -35,7 +37,8 @@ std::vector <std::pair<Narray, byte > > binaryReader::allData(){
         }
         Narrays.push_back(temp);
     }
-    for(register int i = 0; i < size.integer / 50; i++){
+
+    for(register int i = 0; i < size.integer * fator; i++){=======
         ret.push_back({Narrays[i], labels[i]});
     }
     image.close();
