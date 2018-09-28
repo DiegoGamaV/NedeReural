@@ -26,7 +26,7 @@ Narray::Narray(){
 
 // Dividir a matriz por escalar
 Narray Narray::operator/ (const double &a){
-    Narray ret = Narray(row, colunm);
+    Narray ret(row, colunm);
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
             ret.values[i][j] = values[i][j] / a;
@@ -40,7 +40,7 @@ Narray Narray::operator+ (const Narray &a){
     if(a.row != row || a.colunm != colunm){
         exit(1);
     }
-    Narray ret = Narray(row, colunm);
+    Narray ret(row, colunm);
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
             ret.values[i][j] = a.values[i][j] + values[i][j];
@@ -54,7 +54,7 @@ Narray Narray::operator- (const Narray &a){
     if(a.row != row || a.colunm != colunm){
         exit(1);
     }
-    Narray ret = Narray(row, colunm);
+    Narray ret(row, colunm);
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
             ret.values[i][j] = a.values[i][j] - values[i][j];
@@ -65,7 +65,7 @@ Narray Narray::operator- (const Narray &a){
 
 // Mapear elementos de matrizes
 Narray Narray::operator() (double (*f)(double)){
-    Narray ret = Narray(row, colunm);
+    Narray ret(row, colunm);
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
             ret.values[i][j] = f(values[i][j]);
@@ -78,7 +78,7 @@ Narray Narray::operator() (double (*f)(double)){
 Narray Narray::operator* (const Narray &a){
     if(std::min(colunm, row) == 1 && std::min(a.colunm, a.row) == 1){
         int range = std::max(colunm, std::max(row, std::max(a.colunm, a.row)));
-        Narray ret = Narray(range, 1);
+        Narray ret(range, 1);
         for(register int i = 0; i < range; i++)ret.values[i][0] = 1;
 
         if(colunm > row)for(register int i = 0; i < colunm; i++)ret.values[i][0] *= values[0][i];
@@ -92,7 +92,7 @@ Narray Narray::operator* (const Narray &a){
         exit(1);
     }
 
-    Narray ret = Narray(row, a.colunm);
+    Narray ret(row, a.colunm);
 
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < a.colunm; j++){
@@ -151,7 +151,7 @@ void Narray::zeroValues(){
 
 // Soma de escalar por matriz
 Narray operator+ (const double &a, const Narray &b){
-    Narray ret = Narray(b.row, b.colunm);
+    Narray ret(b.row, b.colunm);
     for(register int i = 0; i < b.row; i++){
         for(register int j = 0; j < b.colunm; j++){
             ret.values[i][j] = b.values[i][j] + a;
@@ -167,7 +167,7 @@ Narray operator+(const Narray &a, const double &b){
 
 // Subtração de escalar por matriz
 Narray operator- (double a, Narray &b){
-    Narray ret = Narray(b.row, b.colunm);
+    Narray ret(b.row, b.colunm);
     for(register int i = 0; i < b.row; i++){
         for(register int j = 0; j < b.colunm; j++){
             ret.values[i][j] = a - b.values[i][j];
@@ -178,7 +178,7 @@ Narray operator- (double a, Narray &b){
 
 // Subtração de matriz por escalar
 Narray operator- (Narray &b, double a){
-    Narray ret = Narray(b.row, b.colunm);
+    Narray ret(b.row, b.colunm);
     for(register int i = 0; i < b.row; i++){
         for(register int j = 0; j < b.colunm; j++){
             ret.values[i][j] = b.values[i][j] - a;
@@ -189,7 +189,7 @@ Narray operator- (Narray &b, double a){
 
 // Multiplicação de escalar por matriz
 Narray operator* (const double &a, const Narray &b){
-    Narray ret = Narray(b.row, b.colunm);
+    Narray ret(b.row, b.colunm);
     for(register int i = 0; i < b.row; i++){
         for(register int j = 0; j < b.colunm; j++){
             ret.values[i][j] = a * b.values[i][j];
@@ -206,7 +206,7 @@ Narray operator* (const Narray &a, const double &b){
 // Get matrix row
 Narray Narray::getRow(int id){
     if(id < 0 || id >= row) exit(1);
-    Narray ret = Narray(1, colunm);
+    Narray ret(1, colunm);
     for(register int i = 0; i < colunm; i++)ret.values[0][i] = values[id][i];
     return ret;
 }
@@ -214,14 +214,14 @@ Narray Narray::getRow(int id){
 // Get matrix colunm
 Narray Narray::getColunm(int id){
     if(id < 0 || id >= colunm) exit(1);
-    Narray ret = Narray(row, 1);
+    Narray ret(row, 1);
     for(register int i = 0; i < row; i++)ret.values[i][0] = values[i][id];
     return ret;
 }
 
 // Pega a matriz transposta
 Narray Narray::transposta(){
-    Narray ret = Narray(colunm, row);
+    Narray ret(colunm, row);
     for(register int i = 0; i < row; i++){
         for(register int j = 0; j < colunm; j++){
             ret.values[j][i] = values[i][j];

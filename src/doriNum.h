@@ -57,7 +57,6 @@ struct Narray{
 
     // Pega a matriz transposta
     Narray transposta();
-
 };
 
 Narray operator+ (const double &a, const Narray &b);

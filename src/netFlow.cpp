@@ -13,7 +13,7 @@ const std::string TEST_IMG_PATH = "./data/images-2.ubyte";
 const std::string TEST_LABEL_PATH = "./data/labels-2.ubyte";
 const int BATCH_SIZE = 20;
 const int TRAIN_SIZE = 1000;
-const int EPOCH_AMOUNT = 5; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
+const int EPOCH_AMOUNT = 30; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
 
 Network network;
 
@@ -63,11 +63,11 @@ void train(){
     std::vector<TrainingExample> reducedTrainSet;
 
     /* Computar os conjuntos de treino e teste */
+    //while(true);
     log("Lendo o trainSet");
-    trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH);
+    trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH, 0.1);
     log("Lendo o testSet");
-    testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH);
-
+    testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH, 0.3);
     log("Randomizando o trainSet");
     std::random_shuffle(trainSet.begin(), trainSet.end());
 

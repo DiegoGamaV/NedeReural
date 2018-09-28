@@ -42,7 +42,7 @@ struct InputReader{
     std::vector<TrainingExample> makeTrainings(std::string path, int row, int column);
 
     // faz o vector dos exemplos de treino a partir de um arquivo binário
-    std::vector<TrainingExample> binaryTrainings(std::string image_path, std::string label_path);
+    std::vector<TrainingExample> binaryTrainings(std::string image_path, std::string label_path, double fator);
 
     // Recebe o diretorio das informacoes da rede e retorna um data
     void fileToData(std::string path, Data &data);
