@@ -1,5 +1,7 @@
 #include "netFlow.h"
 #include "debug.h"
+#include "logger.h"
+#include "iomanip"
 
 const unsigned int NUM_PIXELS = 784;
 const unsigned int SIZE_HIDDEN = 16;
@@ -18,6 +20,7 @@ Network network;
 bool existsFile(std::string path);
 void initializeNetwork(InputReader);
 Data createSampleData(Network tmp);
+void printEpoch(int epoch, int correct, int total);
 std::vector<TrainingExample> computeReducedTrain(std::vector<TrainingExample> a);
 
 std::string execute() {
@@ -25,6 +28,7 @@ std::string execute() {
     InputReader reader;
     Output output;
 
+    log("Inicializando a network");
     initializeNetwork(reader);
 
     /* Ler arquivo */
@@ -34,10 +38,13 @@ std::string execute() {
 
     // Criar matriz coluna que representa as ativacoes
     // de entrada da rede neural
+    log("Lendo imagem padrao");
     Narray image = reader.readMatrix(INPUT_PATH, NUM_PIXELS, 1);
 
+    log("Iniciando o feedfoward");
     network.feedfoward(image);
 
+    log("Iniciando print de resposta");
     std::string answer = output.print(network.output.value);
 
     return answer;
@@ -48,6 +55,7 @@ void train(){
     InputReader reader;
     Output output;
 
+    log("Inicializando a network");
     initializeNetwork(reader);
 
     std::vector<TrainingExample> trainSet;
@@ -55,25 +63,42 @@ void train(){
     std::vector<TrainingExample> reducedTrainSet;
 
     /* Computar os conjuntos de treino e teste */
+    log("Lendo o trainSet");
     trainSet = reader.binaryTrainings(TRAIN_IMG_PATH, TRAIN_LABEL_PATH);
+    log("Lendo o testSet");
     testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH);
-    testSet = reader.binaryTrainings(TEST_IMG_PATH, TEST_LABEL_PATH);
+
+    log("Randomizando o trainSet");
     std::random_shuffle(trainSet.begin(), trainSet.end());
+
+    log("Gerando trainSet reduzido");
     reducedTrainSet = computeReducedTrain(trainSet);
     
 
     int batchAmount = reducedTrainSet.size() / BATCH_SIZE;
 
-    std::cout << "Vamos preparar o batch" << std::endl;
     /* Executar e testar epocas de treino */
+    log("Iniciando execucao das training epochs");
     for (int i = 0; i < EPOCH_AMOUNT; i++) {
-        
-        network.trainingEpoch(reducedTrainSet, BATCH_SIZE, batchAmount);
-        int correctCnt = network.testEpoch(testSet);
-        int total = reducedTrainSet.size();
 
+        log("Inicializando uma training epoch");
+        network.trainingEpoch(reducedTrainSet, BATCH_SIZE, batchAmount);
+
+        log("Inicializando teste de epoch");
+        int correctCnt = network.testEpoch(testSet);
+
+        log("Printando qualidade da epoch");
+        printEpoch(i, correctCnt, 10000);
     }
+
+    log("Salvando as informacoes da rede");
     save(reader);
+}
+
+void printEpoch(int epoch, int correct, int total) {
+    double quality = correct * 100.0 / total;
+    std::cout << "EPOCH #" << epoch << ": " << std::fixed 
+    << std::setprecision(2) << quality << "\%" << std::endl;
 }
 
 // NAO MEXER, GAMBIARRA E DESESPERO ABAIXO

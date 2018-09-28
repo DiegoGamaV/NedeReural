@@ -1,5 +1,6 @@
 #include "netFlow.h"
 #include "debug.h"
+#include "logger.h"
 
 enum Type
 {
@@ -10,9 +11,12 @@ enum Type
 void printUsage();
 Type readInput(std::string str);
 void treatInvalidInput(std::string str);
+void checkVerbosity(std::string);
 
 int main(int argc, char* argv[]){
-    std::cout << "VOCE ESTA VIVA?" << std::endl;
+
+    log("Comecando a execucao do programa");
+
     if (argc < 2) {
         printUsage();
         exit(1);
@@ -22,17 +26,24 @@ int main(int argc, char* argv[]){
     treatInvalidInput(str);
     Type type = readInput(str);
 
+    if (argc >= 3) {
+        std::string str2(argv[2]);
+        checkVerbosity(str2);
+    }
+
     std::string answer = "";
     
     switch (type)
     {
         case TRAIN:
             /* Codigo para treinamento da rede */
+            log("Indo para execucao de treino");
             train();
             break;
             
         case EXEC:
             /* Codigo para execucao normal da rede */
+            log("Indo para execucao padrao");
             answer = execute();
             break;
 
@@ -68,7 +79,14 @@ void treatInvalidInput(std::string str){
     }
 }
 
+void checkVerbosity(std::string str){
+    if (str == "--v") {
+        setVerbosity(1);
+    }
+}
+
 void printUsage() {
     std::cout << "Usage:" << std::endl;
     std::cout << "  ./run (--train | --exec)" << std::endl;
+    std::cout << "  ./run (--train | --exec) (--v)" << std::endl;
 }

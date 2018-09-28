@@ -54,7 +54,7 @@ Data Network::backpropagation(Narray expected){
         // Derivada parcial (da/dz) * (dC0/da)
         double recurrentPart = derivateSigmoid(Z_output) * 2 * (A_output - y);
         // Gerar modificacao necessaria no bias do output
-        data.biasesOutput.values[i][0] += recurrentPart;
+        data.biasesOutput.values[i][0] -= recurrentPart;
 
         // Iterar pelos neuronios da camada hidden
         for (int j = 0; j < hidden.numNeuronsThis; j++){
@@ -63,13 +63,13 @@ Data Network::backpropagation(Narray expected){
             Z_hidden = hidden.zeta.values[j][0];
 
             // Guardar a mudanca necessaria para esse peso 
-            data.weightsOutput.values[i][j] += A_hidden * recurrentPart;
+            data.weightsOutput.values[i][j] -= A_hidden * recurrentPart;
             
 
             double internalRecurrent = derivateSigmoid(Z_hidden) * W_output * recurrentPart;
 
             // Atualiza biases da hidden
-            data.biasesHidden.values[j][0] += internalRecurrent;
+            data.biasesHidden.values[j][0] -= internalRecurrent;
 
             // Iterar pelos pesos entre a camada input e hidden
             for (int k = 0; k < input.numNeuronsThis; k++){
@@ -77,7 +77,7 @@ Data Network::backpropagation(Narray expected){
                 // (dz/dw) * (da/dz) * (dz/da) * recurrentPart
                 double calc = A_input * internalRecurrent;
 
-                data.weightsHidden.values[j][k] += calc;
+                data.weightsHidden.values[j][k] -= calc;
             }
         }
     }
