@@ -116,4 +116,3 @@ void InputReader::dataToFile(std::string path, Data &data){
     output_file.write(reinterpret_cast<char*> (&data), sizeof(Data));
     output_file.close();
 }
-

@@ -11,11 +11,14 @@ const std::string TRAIN_IMG_PATH = "./data/images-1.ubyte";
 const std::string TRAIN_LABEL_PATH = "./data/labels-1.ubyte";
 const std::string TEST_IMG_PATH = "./data/images-2.ubyte";
 const std::string TEST_LABEL_PATH = "./data/labels-2.ubyte";
-const int BATCH_SIZE = 20;
-const int TRAIN_SIZE = 1000;
+const int BATCH_SIZE = 15;
+const int TRAIN_SIZE = 1200;
 const int EPOCH_AMOUNT = 5; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
+
 bool drawing;
 cv::Mat img;
+const double LEARN_RATE = 6.0;
+
 
 Network network;
 
@@ -48,7 +51,8 @@ std::string execute() {
 
     log("Iniciando print de resposta");
     std::string answer = output.print(network.output.value);
-
+    image.close();
+    network.close();
     return answer;
 }
 
@@ -63,6 +67,7 @@ void train(){
     std::vector<TrainingExample> trainSet;
     std::vector<TrainingExample> testSet;
     std::vector<TrainingExample> reducedTrainSet;
+
 
     /* Computar os conjuntos de treino e teste */
     //while(true);
@@ -82,28 +87,31 @@ void train(){
         reducedTrainSet = computeReducedTrain(trainSet);
         
 
+
         int batchAmount = reducedTrainSet.size() / BATCH_SIZE;
     for (int i = 0; i < EPOCH_AMOUNT; i++) {
+
         log("Inicializando uma training epoch");
-        network.trainingEpoch(reducedTrainSet, BATCH_SIZE, batchAmount);
+        network.trainingEpoch(reducedTrainSet, BATCH_SIZE, batchAmount, LEARN_RATE);
 
         log("Inicializando teste de epoch");
         int correctCnt = network.testEpoch(testSet);
 
         log("Printando qualidade da epoch");
-        printEpoch(i, correctCnt, 10000);
+        printEpoch(i, correctCnt, BATCH_SIZE * batchAmount);
 
         log("Salvando as informacoes da rede");
         save(reader);
     }
-
+    network.close();
 }
+
 
 void printEpoch(int epoch, int correct, int total) {
     double quality = correct * 100.0 / total;
     std::cout << "EPOCH #" << epoch << ": " << std::fixed 
     << std::setprecision(2) << quality << "\%" <<
-    " ACERTOS = " << correct << std::endl;
+    " ~ " << correct << "/" << total << std::endl;
 }
 
 // NAO MEXER, GAMBIARRA E DESESPERO ABAIXO
@@ -141,7 +149,7 @@ bool existsFile(std::string path) {
 void initializeNetwork(InputReader reader){
     /* Checar casos de execucao */
     bool isFirstExec = !existsFile(DATA_PATH);
-    if (isFirstExec) {
+    if (true) {
         network = Network(NUM_PIXELS, SIZE_HIDDEN);
     } else {
         Network tmp = Network();

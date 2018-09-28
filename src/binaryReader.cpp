@@ -25,8 +25,10 @@ std::vector <std::pair<Narray, byte > > binaryReader::allData(double fator){
     image.read(rows.chars, 4);gmbARUMAITO(rows);
     image.read(colunms.chars, 4);gmbARUMAITO(colunms);
     std::vector < Narray > Narrays;
+
     for(int a = 0; a < size.integer * fator; a++){
         Narray temp(colunms.integer * rows.integer, 1);
+
         for(register int i = 0; i < rows.integer; i++){
             for(register int j = 0; j < colunms.integer; j++){
                 image.read(&l, 1);
@@ -36,8 +38,11 @@ std::vector <std::pair<Narray, byte > > binaryReader::allData(double fator){
         Narrays.push_back(temp);
     }
     for(register int i = 0; i < size.integer * fator; i++){
+
         ret.push_back({Narrays[i], labels[i]});
     }
+    image.close();
+    label.close();
     return ret;
 }
 
