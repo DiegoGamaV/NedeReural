@@ -27,6 +27,7 @@ struct Data {
     // Dividir Data por escalar
     Data operator/ (const double &a);
 
+    void close();
     // Zera todos os elementos da Data
     void zeroValues();
 };

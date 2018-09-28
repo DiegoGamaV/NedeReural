@@ -2,22 +2,18 @@
 #include "debug.h"
 #include "logger.h"
 
-Layer hidden;
-Layer output;
-Layer input;
-
 // Constroi uma network sem informacao
 Network::Network(){
     hidden = Layer(16, 784);
     output = Layer(10, 16);
-    input = Layer(784, 0);
+    input = Layer(784, 1);
 }
 
 // Constroi uma network com valores arbitrarios
 Network::Network(int pixels, int sizeHidden){
     hidden = Layer(sizeHidden, pixels);
     output = Layer(10, sizeHidden);
-    input = Layer(pixels, 0);
+    input = Layer(pixels, 1);
 
 }
 
@@ -103,6 +99,7 @@ double Network::quadraticCost(Narray output, int expected){
     }
 
     double sumOfCosts = sumCosts(costs);
+    expectedOutput.close();
     return sumOfCosts;
 }
 
@@ -140,7 +137,6 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
     //double cost = 0.0;
     //double averageCost = 0.0;
 
-    // TODO: Zerar narrays
     Narray hiddenWeights = Narray(hidden.weight.row, hidden.weight.colunm);
     Narray outputWeights = Narray(output.weight.row, output.weight.colunm);
     Narray hiddenBiases = Narray(hidden.bias.row, 1);
@@ -152,8 +148,8 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
     log("Comecando a execucao de cada sample do minibatch");
     for (int i = 0; i < size; i++){
         sample = minibatch[i];
-        imageData <<= sample.imageData;
-        
+        //imageData <<= sample.imageData;
+        imageData = Narray(sample.imageData);
         log("Iniciando feedfoward de um sample");
         feedfoward(imageData);
 
@@ -170,7 +166,12 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
         averageDesiredChanges = averageDesiredChanges + desiredChanges;
     }
     //averageCost = averageCost / size;
-
+    outputBiases.close();
+    hiddenBiases.close();
+    outputWeights.close();
+    hiddenWeights.close();
+    desiredChanges.close();
+    sample.close();
     averageDesiredChanges = averageDesiredChanges / size;
 
     return averageDesiredChanges;
@@ -207,6 +208,12 @@ void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int ba
         hidden.weight = hidden.weight + changes.weightsHidden;
         hidden.bias = hidden.bias + changes.biasesHidden;
     }
+    changes.close();
+    for (int i = 0; i < batchAmount; i++){
+        for (int j = 0; j < batchSize; j++){
+            miniBatches[i][j].close(); 
+        }
+    }
 }
 
 // Retorna a quantidade de acertos da rede neural para um conjunto
@@ -231,4 +238,10 @@ int Network::testEpoch(std::vector<TrainingExample> testSamples){
         }
     }
     return correctAnswerCnt;
+}
+
+void Network::close(){
+    hidden.close();
+    output.close();
+    input.close();
 }

@@ -11,17 +11,45 @@ Narray::Narray(unsigned int _row, unsigned int _colunm){
     // guarda o tamanho da matriz
     row = _row;
     colunm = _colunm;
-    
-    // insere valores nulos na matriz
-    for(register int i = 0; i < row; i++){
-        for(register int j = 0; j < colunm; j++){
+    for(register int i = 0; i < row; i++)
+        for(register int j = 0; j < colunm; j++)
             values[i][j] = 0;
-        }
-    }
 }
 
 Narray::Narray(){
-    Narray(0, 0);
+    unsigned int _row = 1;
+    unsigned int _colunm = 1;
+    // Aloca dinamicamente a matriz na memória
+    values = (double**) malloc(sizeof(double*) * _row);
+    for(register int i = 0; i < _row; i++)
+        values[i] = (double*) malloc(sizeof(double) * _colunm);
+    
+    // guarda o tamanho da matriz
+    row = _row;
+    colunm = _colunm;
+    for(register int i = 0; i < row; i++)
+        for(register int j = 0; j < colunm; j++)
+            values[i][j] = 0;
+}
+
+Narray::Narray(const Narray &a){
+    unsigned int _row = a.row;
+    unsigned int _colunm = a.colunm;
+    // Aloca dinamicamente a matriz na memória
+    values = (double**) malloc(sizeof(double*) * _row);
+    for(register int i = 0; i < _row; i++)
+        values[i] = (double*) malloc(sizeof(double) * _colunm);
+    
+    // guarda o tamanho da matriz
+    row = _row;
+    colunm = _colunm;
+
+    // insere valores nulos na matriz
+    for(register int i = 0; i < row; i++){
+        for(register int j = 0; j < colunm; j++){
+            values[i][j] = a.values[i][j];
+        }
+    }
 }
 
 // Dividir a matriz por escalar
@@ -103,21 +131,6 @@ Narray Narray::operator* (const Narray &a){
     }
 
     return ret;
-}
-
-void Narray::operator<<= (const Narray &a){
-    values = (double**) malloc(sizeof(double*) * a.row);
-    for(register int i = 0; i < a.row; i++)
-        values[i] = (double*) malloc(sizeof(double) * a.colunm);
-    
-    row = a.row;
-    colunm = a.colunm;
-    
-    for(register int i = 0; i < row; i++){
-        for(register int j = 0; j < colunm; j++){
-            values[i][j] = a.values[i][j];
-        }
-    }
 }
 
 // Definir matriz de valores
@@ -227,6 +240,14 @@ Narray Narray::transposta(){
             ret.values[j][i] = values[i][j];
         }
     }
+}
+
+void Narray::close(){
+    for(register int i = 0; i < row; i++){
+        free(values[i]);
+    }
+    row = 0;
+    colunm = 0;
 }
 
 double sigmoid(double val){

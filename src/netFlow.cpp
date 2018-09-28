@@ -12,8 +12,8 @@ const std::string TRAIN_LABEL_PATH = "./data/labels-1.ubyte";
 const std::string TEST_IMG_PATH = "./data/images-2.ubyte";
 const std::string TEST_LABEL_PATH = "./data/labels-2.ubyte";
 const int BATCH_SIZE = 10;
-const int TRAIN_SIZE = 500;
-const int EPOCH_AMOUNT = 100; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
+const int TRAIN_SIZE = 10;
+const int EPOCH_AMOUNT = 1; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
 
 Network network;
 
@@ -46,7 +46,8 @@ std::string execute() {
 
     log("Iniciando print de resposta");
     std::string answer = output.print(network.output.value);
-
+    image.close();
+    network.close();
     return answer;
 }
 
@@ -96,6 +97,7 @@ void train(){
 
     log("Salvando as informacoes da rede");
     save(reader);
+    network.close();
 }
 
 void printEpoch(int epoch, int correct, int total) {
@@ -140,7 +142,7 @@ bool existsFile(std::string path) {
 void initializeNetwork(InputReader reader){
     /* Checar casos de execucao */
     bool isFirstExec = !existsFile(DATA_PATH);
-    if (isFirstExec) {
+    if (true) {
         network = Network(NUM_PIXELS, SIZE_HIDDEN);
     } else {
         Network tmp = Network();
