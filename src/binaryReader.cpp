@@ -38,6 +38,8 @@ std::vector <std::pair<Narray, byte > > binaryReader::allData(){
     for(register int i = 0; i < size.integer; i++){
         ret.push_back({Narrays[i], labels[i]});
     }
+    image.close();
+    label.close();
     return ret;
 }
 

@@ -11,9 +11,9 @@ const std::string TRAIN_IMG_PATH = "./data/images-1.ubyte";
 const std::string TRAIN_LABEL_PATH = "./data/labels-1.ubyte";
 const std::string TEST_IMG_PATH = "./data/images-2.ubyte";
 const std::string TEST_LABEL_PATH = "./data/labels-2.ubyte";
-const int BATCH_SIZE = 10;
-const int TRAIN_SIZE = 10;
-const int EPOCH_AMOUNT = 1; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
+const int BATCH_SIZE = 20;
+const int TRAIN_SIZE = 1000;
+const int EPOCH_AMOUNT = 5; // EPOCH_AMOUNT * BATCH_SIZE <= 60000
 
 Network network;
 
@@ -93,12 +93,13 @@ void train(){
 
         log("Printando qualidade da epoch");
         printEpoch(i, correctCnt, 10000);
-    }
 
-    log("Salvando as informacoes da rede");
-    save(reader);
+        log("Salvando as informacoes da rede");
+        save(reader);
+    }
     network.close();
 }
+
 
 void printEpoch(int epoch, int correct, int total) {
     double quality = correct * 100.0 / total;

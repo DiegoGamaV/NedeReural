@@ -14,12 +14,13 @@ Network::Network(int pixels, int sizeHidden){
     hidden = Layer(sizeHidden, pixels);
     output = Layer(10, sizeHidden);
     input = Layer(pixels, 1);
-
 }
 
 // Constroi uma rede recebendo todas as informacoes dela
 Network::Network(int pixels, int sizeHidden, Data data){
-    Network(pixels, sizeHidden);
+    hidden = Layer(sizeHidden, pixels);
+    output = Layer(10, sizeHidden);
+    input = Layer(pixels, 1);
     hidden.weight = data.weightsHidden;
     output.weight = data.weightsOutput;
     hidden.bias = data.biasesHidden;
@@ -40,7 +41,6 @@ Data Network::backpropagation(Narray expected){
 
     log("Zerando valores do Data gerado");
     data.zeroValues();
-
     
     double A_output, A_hidden, A_input, Z_output, Z_hidden, y;
 
@@ -75,7 +75,6 @@ Data Network::backpropagation(Narray expected){
                 A_input = input.value.values[k][0];
                 // (dz/dw) * (da/dz) * (dz/da) * recurrentPart
                 double calc = A_input * internalRecurrent;
-
                 data.weightsHidden.values[j][k] -= calc;
             }
         }
