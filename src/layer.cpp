@@ -22,21 +22,21 @@ Layer::Layer() {
 
 //preenche os valores de weight com os valores presentes em actual
 void Layer::fillWeight(Narray &actual){
-    if(actual.row == weight.row && actual.colunm == weight.colunm){
+    if(actual.row == weight.row && actual.column == weight.column){
         weight = actual;
     }
 }
 
 //preenche os valores de bias com os valores presentes em actual
 void Layer::fillBias(Narray &actual){
-    if(actual.row == bias.row && actual.colunm == bias.colunm){
+    if(actual.row == bias.row && actual.column == bias.column){
         bias = actual;
     }
 }
 
 //preenche os valores de value com os valores presentes em actual
 void Layer::fillValue(Narray &actual){
-    if(actual.row == value.row && actual.colunm == value.colunm){
+    if(actual.row == value.row && actual.column == value.column){
         value = actual;
     }
 }
@@ -46,11 +46,4 @@ Narray Layer::activate(Narray previousValues){
     zeta = (weight * previousValues) + bias;
     value = zeta(sigmoid);
     return value;
-}
-
-void Layer::close(){
-    weight.close();
-    bias.close();
-    zeta.close();;
-    value.close();;
 }

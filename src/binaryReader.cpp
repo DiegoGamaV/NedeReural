@@ -20,17 +20,17 @@ std::vector <std::pair<Narray, byte > > binaryReader::allData(){
         label.read(&l, 1);
         labels.push_back(l);
     }
-    buffer rows, colunms;
+    buffer rows, columns;
     image.read(size.chars, 4);image.read(size.chars, 4);gmbARUMAITO(size);
     image.read(rows.chars, 4);gmbARUMAITO(rows);
-    image.read(colunms.chars, 4);gmbARUMAITO(colunms);
+    image.read(columns.chars, 4);gmbARUMAITO(columns);
     std::vector < Narray > Narrays;
     for(int a = 0; a < size.integer; a++){
-        Narray temp = Narray(colunms.integer * rows.integer, 1);
+        Narray temp = Narray(columns.integer * rows.integer, 1);
         for(register int i = 0; i < rows.integer; i++){
-            for(register int j = 0; j < colunms.integer; j++){
+            for(register int j = 0; j < columns.integer; j++){
                 image.read(&l, 1);
-                temp.values[i * colunms.integer + j][0] = ((int)((unsigned char)l))/255.0;
+                temp.at(i, j) = (l & 0xff) / 255.0;
             }
         }
         Narrays.push_back(temp);

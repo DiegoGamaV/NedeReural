@@ -18,16 +18,16 @@ std::string Output::print(Narray activations_values) {
     double total = 0.0;
 
     for (int i = 0; i < activations_values.row; i++) {
-        total += activations_values.values[i][0];  
+        total += activations_values.at(i, 0);
     }
 
     for(int i = 0; i < activations_values.row; i++) {
-        if(activations_values.values[i][0] > bestSigmoid) {
-            bestSigmoid = activations_values.values[i][0];
+        if(activations_values.at(i, 0) > bestSigmoid) {
+            bestSigmoid = activations_values.at(i, 0);
             retNumber = i;
         }
 
-        ret += toPercentage(i, activations_values.values[i][0] * 100.0 / total);
+        ret += toPercentage(i, activations_values.at(i, 0) * 100.0 / total);
 
         if(i <= 8) {
             ret += ", ";

@@ -7,7 +7,7 @@ Narray InputReader::readMatrix(std::string path, int row, int column){
     Narray ret = Narray(row, column);
     for(int i = 0; i < row; i++){
         for(int j = 0; j < column; j++){
-            archive >> ret.values[i][j];
+            archive >> ret.at(i, j);
         }
     }
     archive.close();
@@ -51,8 +51,8 @@ void InputReader::fillArchive(std::string path, Narray content){
     std::ofstream archive (path.c_str());
 
     for(int i = 0; i < content.row; i++){
-        for(int j = 0; j < content.colunm; j++){
-            archive << content.values[i][j];
+        for(int j = 0; j < content.column; j++){
+            archive << content.at(i, j);
             archive << " ";
         }
         archive << "\n";

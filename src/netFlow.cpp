@@ -46,8 +46,7 @@ std::string execute() {
 
     log("Iniciando print de resposta");
     std::string answer = output.print(network.output.value);
-    image.close();
-    network.close();
+
     return answer;
 }
 
@@ -97,7 +96,6 @@ void train(){
         log("Salvando as informacoes da rede");
         save(reader);
     }
-    network.close();
 }
 
 
@@ -151,13 +149,13 @@ void initializeNetwork(InputReader reader){
 
         log("Lendo informacoes de treino da rede");
         info.weightsHidden = reader.readMatrix(DATA_PATH + "weightsHidden.txt", 
-                             info.weightsHidden.row, info.weightsHidden.colunm);
+                             info.weightsHidden.row, info.weightsHidden.column);
         info.weightsOutput = reader.readMatrix(DATA_PATH + "weightsOutput.txt", 
-                             info.weightsOutput.row, info.weightsOutput.colunm);
+                             info.weightsOutput.row, info.weightsOutput.column);
         info.biasesOutput = reader.readMatrix(DATA_PATH + "biasesOutput.txt", 
-                             info.biasesOutput.row, info.biasesOutput.colunm);
+                             info.biasesOutput.row, info.biasesOutput.column);
         info.biasesHidden = reader.readMatrix(DATA_PATH + "biasesHidden.txt", 
-                             info.biasesHidden.row, info.biasesHidden.colunm);
+                             info.biasesHidden.row, info.biasesHidden.column);
 
         log("Criando rede com informacoes customizadas de treino");
         network = Network(NUM_PIXELS, SIZE_HIDDEN, info);

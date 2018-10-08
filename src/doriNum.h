@@ -6,19 +6,24 @@
 #include <time.h>
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 struct Narray{
 
     // Valores da matriz
-    double** values;
+    std::vector<double> values;
 
     // Quantidade de linhas e colunas
-    unsigned int row, colunm;
+    unsigned int row, column;
 
     // Construtor
-    Narray(unsigned int _row, unsigned int _colunm);
+    Narray(unsigned int _row, unsigned int _column);
     Narray();
     Narray(const Narray &a);
+
+    inline double& at(int i, int j) { return values[column * i + j]; }
+    inline double at(int i, int j) const { return values[column * i + j]; }
+
     // Operador de dividir todos os elementos por um escalar
     Narray operator/ (const double &a);
 
@@ -34,12 +39,6 @@ struct Narray{
     // Mapear valores da matriz
     Narray operator() (double (*f)(double));
 
-    // Definir matriz de valores
-    void operator<< (double** a);
-
-    // Retornar matriz de valores
-    void operator>> (double** a);
-
     // Elementos aleatórios na matriz
     void randomValues();
 
@@ -54,9 +53,6 @@ struct Narray{
 
     // Pega a matriz transposta
     Narray transposta();
-
-    // Liberar NArray
-    void close();
 };
 
 Narray operator+ (const double &a, const Narray &b);

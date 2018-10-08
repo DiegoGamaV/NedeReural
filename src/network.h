@@ -47,6 +47,4 @@ struct Network {
     void trainingEpoch(std::vector<TrainingExample> trainingSamples, int batchSize, int batchAmount);
 
     int testEpoch(std::vector<TrainingExample> testSamples);
-
-    void close();
 };  
