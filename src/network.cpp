@@ -47,35 +47,35 @@ Data Network::backpropagation(Narray expected){
     // Iterar pelos neuronios da camada output
     for (int i = 0; i < output.numNeuronsThis; i++){
 
-        A_output = output.value.values[i][0];
-        Z_output = output.zeta.values[i][0];
-        y = expected.values[i][0];
+        A_output = output.value.at(i, 0);
+        Z_output = output.zeta.at(i, 0);
+        y = expected.at(i, 0);
 
         // Derivada parcial (da/dz) * (dC0/da)
         double recurrentPart = derivateSigmoid(Z_output) * 2 * (A_output - y);
         // Gerar modificacao necessaria no bias do output
-        data.biasesOutput.values[i][0] -= recurrentPart;
+        data.biasesOutput.at(i, 0) -= recurrentPart;
 
         // Iterar pelos neuronios da camada hidden
         for (int j = 0; j < hidden.numNeuronsThis; j++){
-            double W_output = output.weight.values[i][j];
-            A_hidden = hidden.value.values[j][0];
-            Z_hidden = hidden.zeta.values[j][0];
+            double W_output = output.weight.at(i, j);
+            A_hidden = hidden.value.at(j, 0);
+            Z_hidden = hidden.zeta.at(j, 0);
 
             // Guardar a mudanca necessaria para esse peso 
-            data.weightsOutput.values[i][j] -= A_hidden * recurrentPart;
+            data.weightsOutput.at(i, j) -= A_hidden * recurrentPart;
             
             double internalRecurrent = derivateSigmoid(Z_hidden) * W_output * recurrentPart;
 
             // Atualiza biases da hidden
-            data.biasesHidden.values[j][0] -= internalRecurrent;
+            data.biasesHidden.at(j, 0) -= internalRecurrent;
 
             // Iterar pelos pesos entre a camada input e hidden
             for (int k = 0; k < input.numNeuronsThis; k++){
-                A_input = input.value.values[k][0];
+                A_input = input.value.at(k, 0);
                 // (dz/dw) * (da/dz) * (dz/da) * recurrentPart
                 double calc = A_input * internalRecurrent;
-                data.weightsHidden.values[j][k] -= calc;
+                data.weightsHidden.at(j, k) -= calc;
             }
         }
     }
@@ -94,24 +94,18 @@ double Network::quadraticCost(Narray output, int expected){
     Narray expectedOutput = buildExpectedOutput(expected);
     Narray costs = expectedOutput - output;
     for (int i = 0; i < size; i++){
-    	costs.values[i][0] = costs.values[i][0] * costs.values[i][0];
+    	costs.at(i, 0) = costs.at(i, 0) * costs.at(i, 0);
     }
 
     double sumOfCosts = sumCosts(costs);
-    expectedOutput.close();
     return sumOfCosts;
 }
 
 // Cria uma matriz coluna que sera
 // a melhor resposta possivel
 Narray Network::buildExpectedOutput(int expected){
-    Narray expectedOutput = Narray(10, 1);
-
-    for (int i = 0; i < 10; i++) {
-        expectedOutput.values[i][0] = 0;
-    }
-    expectedOutput.values[expected][0] = 1.0;
-
+    Narray expectedOutput(10, 1);
+    expectedOutput.at(expected, 0) = 1.0;
     return expectedOutput;
 }
 
@@ -120,7 +114,7 @@ double Network::sumCosts(Narray costs){
     double sum = 0;
 
     for (int i = 0; i < costs.row; i++) {
-        double val = costs.values[i][0];
+        double val = costs.at(i, 0);
         sum += val;
     }
     return sum;
@@ -136,8 +130,8 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
     //double cost = 0.0;
     //double averageCost = 0.0;
 
-    Narray hiddenWeights = Narray(hidden.weight.row, hidden.weight.colunm);
-    Narray outputWeights = Narray(output.weight.row, output.weight.colunm);
+    Narray hiddenWeights = Narray(hidden.weight.row, hidden.weight.column);
+    Narray outputWeights = Narray(output.weight.row, output.weight.column);
     Narray hiddenBiases = Narray(hidden.bias.row, 1);
     Narray outputBiases = Narray(output.bias.row, 1);
 
@@ -165,12 +159,6 @@ Data Network::minibatchEvaluation(TrainingExample minibatch[], int size){
         averageDesiredChanges = averageDesiredChanges + desiredChanges;
     }
     //averageCost = averageCost / size;
-    outputBiases.close();
-    hiddenBiases.close();
-    outputWeights.close();
-    hiddenWeights.close();
-    desiredChanges.close();
-    sample.close();
     averageDesiredChanges = averageDesiredChanges / size;
 
     return averageDesiredChanges;
@@ -207,12 +195,6 @@ void Network::trainingEpoch(std::vector<TrainingExample> trainingSamples, int ba
         hidden.weight = hidden.weight + changes.weightsHidden;
         hidden.bias = hidden.bias + changes.biasesHidden;
     }
-    changes.close();
-    for (int i = 0; i < batchAmount; i++){
-        for (int j = 0; j < batchSize; j++){
-            miniBatches[i][j].close(); 
-        }
-    }
 }
 
 // Retorna a quantidade de acertos da rede neural para um conjunto
@@ -225,10 +207,10 @@ int Network::testEpoch(std::vector<TrainingExample> testSamples){
         feedfoward(test.imageData);
 
         int answer;
-        double higher = output.value.values[0][0];
+        double higher = output.value.at(0, 0);
 
         for (int i = 0; i < 10; i++) {
-            if (output.value.values[i][0] > higher) {
+            if (output.value.at(i, 0) > higher) {
                 answer = i;
             }
         }
@@ -237,10 +219,4 @@ int Network::testEpoch(std::vector<TrainingExample> testSamples){
         }
     }
     return correctAnswerCnt;
-}
-
-void Network::close(){
-    hidden.close();
-    output.close();
-    input.close();
 }

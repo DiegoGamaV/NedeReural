@@ -11,7 +11,3 @@ TrainingExample::TrainingExample(Narray &data, unsigned int _representedValue){
 TrainingExample::TrainingExample(){
 	// TODO
 }
-
-void TrainingExample::close(){
-	imageData.close();
-}

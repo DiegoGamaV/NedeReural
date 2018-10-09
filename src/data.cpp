@@ -57,10 +57,3 @@ void Data::zeroValues(){
     biasesHidden.zeroValues();
     biasesOutput.zeroValues();
 }
-
-void Data::close(){
-    weightsHidden.close();
-    weightsOutput.close();
-    biasesHidden.close();
-    biasesOutput.close();
-}
